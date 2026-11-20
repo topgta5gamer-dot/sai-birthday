@@ -68,28 +68,44 @@ class TeacupController {
   }
 
   petCat() {
+    this.petCount = (this.petCount || 0) + 1;
     this.playCatVoice();
+
+    // Subtle tactile haptic response on mobile
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try { navigator.vibrate([35, 50, 35]); } catch (e) {}
+    }
+
+    const isStretch = (this.petCount % 3 === 0);
 
     if (this.catToast) {
       const meowMessages = [
         '🐱 "Meow! 💖" (Sai\'s Favorite)',
         '🐾 *purrrrrr...* Mew!',
         '🐱 "Mrrrp? 🐾 *happy purrs*"',
-        '🐾 *soft kitten meow* 💖',
+        '🐾 *soft kitten chirp* 💖',
         '🐱 "Mew! *demands head scratches*"'
       ];
-      const randomMsg = meowMessages[Math.floor(Math.random() * meowMessages.length)];
+      const stretchMessages = [
+        '💖 *stretches sleepily & purrs* "Sai is my favorite human!"',
+        '🐾 *big sleepy yawn & stretches front paws* ✨',
+        '🐱 *rolls over happily into your hand* 💖'
+      ];
+      const randomMsg = isStretch
+        ? stretchMessages[Math.floor(Math.random() * stretchMessages.length)]
+        : meowMessages[Math.floor(Math.random() * meowMessages.length)];
+
       this.catToast.textContent = randomMsg;
       this.catToast.classList.add('is-purring');
       setTimeout(() => {
         this.catToast.classList.remove('is-purring');
-      }, 2500);
+      }, 2600);
     }
 
     if (this.catEl) {
-      this.catEl.classList.remove('cat-bounce');
+      this.catEl.classList.remove('cat-bounce', 'cat-stretching');
       void this.catEl.offsetWidth;
-      this.catEl.classList.add('cat-bounce');
+      this.catEl.classList.add(isStretch ? 'cat-stretching' : 'cat-bounce');
     }
   }
 
@@ -97,19 +113,46 @@ class TeacupController {
     if (!this.quotes || this.quotes.length === 0) return;
 
     let nextIndex;
-    if (this.quotes.length === 1) {
-      nextIndex = 0;
+    this.sipCounter = (this.sipCounter || 0) + 1;
+
+    // Alternate every second sip with Patrick Jane's curated Birthday Tea Blends
+    if (this.sipCounter % 2 === 0) {
+      const blends = [
+        {
+          text: "Today's Blend: Himalayan Golden Tips with Bergamot & Wild Honey. Note: Best consumed while unraveling someone's secrets.",
+          source: "Patrick Jane's Tea Pairing"
+        },
+        {
+          text: "Today's Blend: Vintage Lapsang Souchong with Dried Jasmine. Note: Strictly never stir clockwise on a birthday.",
+          source: "CBI Kitchen Records"
+        },
+        {
+          text: "Today's Blend: Kashmiri Kahwa with crushed saffron & green cardamom. Note: Luxurious, celebratory, and fits Sai perfectly.",
+          source: "Patrick Jane's Private Reserve"
+        },
+        {
+          text: "Today's Blend: First Flush Darjeeling with fresh garden mint sprigs. Note: Razor-sharp and calming for turning another year wiser.",
+          source: "Patrick Jane • Field Notes"
+        }
+      ];
+      const selected = blends[Math.floor(Math.random() * blends.length)];
+      if (this.textEl) this.textEl.textContent = `"${selected.text}"`;
+      if (this.sourceEl) this.sourceEl.textContent = `— ${selected.source}`;
     } else {
-      do {
-        nextIndex = Math.floor(Math.random() * this.quotes.length);
-      } while (nextIndex === this.lastQuoteIndex);
+      if (this.quotes.length === 1) {
+        nextIndex = 0;
+      } else {
+        do {
+          nextIndex = Math.floor(Math.random() * this.quotes.length);
+        } while (nextIndex === this.lastQuoteIndex);
+      }
+
+      this.lastQuoteIndex = nextIndex;
+      const item = this.quotes[nextIndex];
+
+      if (this.textEl) this.textEl.textContent = `"${item.text}"`;
+      if (this.sourceEl) this.sourceEl.textContent = `— ${item.source || 'Patrick Jane'}`;
     }
-
-    this.lastQuoteIndex = nextIndex;
-    const item = this.quotes[nextIndex];
-
-    if (this.textEl) this.textEl.textContent = `"${item.text}"`;
-    if (this.sourceEl) this.sourceEl.textContent = `— ${item.source || 'Patrick Jane'}`;
 
     if (this.cardEl && showCard) {
       this.cardEl.classList.add('is-visible');
