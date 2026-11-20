@@ -34,6 +34,7 @@
   align-items: center;
   overflow: hidden;
   box-sizing: border-box;
+  contain: layout paint;
 }
 
 .turntable-plinth::before {
@@ -87,6 +88,10 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.5s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .vinyl-record.is-spinning {
@@ -94,8 +99,8 @@
 }
 
 @keyframes spinRecord {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: translateZ(0) rotate(0deg); }
+  to { transform: translateZ(0) rotate(360deg); }
 }
 
 /* Vinyl Micro-Groove Sheen */
