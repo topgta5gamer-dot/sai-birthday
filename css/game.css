@@ -357,3 +357,140 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ================= PATRICK JANE'S BIOMETRIC PULSE CHECK ================= */
+.pulse-check-section {
+  width: 100%;
+  max-width: 500px;
+  margin: 1.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.pulse-pad-card {
+  position: relative;
+  width: 100%;
+  background: var(--color-porcelain);
+  border: 1.5px solid var(--color-vintage-gold);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  box-shadow: 0 4px 15px rgba(43, 27, 26, 0.08);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.pulse-pad-card:hover {
+  border-color: var(--color-ruby);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(155, 17, 30, 0.15);
+}
+
+.pulse-pad-card.is-scanning {
+  border-color: var(--color-ruby);
+  background: #FFFDF9;
+  box-shadow: 0 0 25px rgba(220, 20, 60, 0.35);
+  animation: pulseScanGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes pulseScanGlow {
+  0% { box-shadow: 0 0 10px rgba(155, 17, 30, 0.2); }
+  100% { box-shadow: 0 0 25px rgba(220, 20, 60, 0.45); }
+}
+
+.pulse-pad-card.is-verified {
+  border-color: #2D6A4F;
+  box-shadow: 0 4px 15px rgba(45, 106, 79, 0.25);
+}
+
+.pulse-thumb-symbol {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-thumb-svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.pulse-pad-card.is-scanning .pulse-thumb-svg {
+  transform: scale(1.15);
+}
+
+.pulse-info-meta {
+  text-align: left;
+  flex: 1;
+}
+
+.pulse-badge {
+  font-family: var(--font-typewriter);
+  font-size: 0.65rem;
+  color: var(--color-ruby);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+}
+
+.pulse-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-ink);
+  margin: 0.15rem 0;
+}
+
+.pulse-instruction {
+  font-family: var(--font-typewriter);
+  font-size: 0.72rem;
+  color: var(--color-ink-faint);
+}
+
+.pulse-verdict-box {
+  display: none;
+  width: 100%;
+  background: #FFFDF9;
+  border: 1.5px solid var(--color-vintage-gold);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-top: 1rem;
+  box-shadow: 0 8px 24px rgba(43, 27, 26, 0.12);
+  text-align: center;
+  animation: revealFade 0.5s ease-in;
+  box-sizing: border-box;
+}
+
+.pulse-verdict-box.is-visible {
+  display: block;
+}
+
+.pulse-verdict-stamp {
+  display: inline-block;
+  font-family: var(--font-typewriter);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ruby);
+  border: 1px solid var(--color-ruby);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  margin-bottom: 0.6rem;
+}
+
+.pulse-verdict-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+  line-height: 1.55;
+}
