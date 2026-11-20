@@ -84,8 +84,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  perspective: 1400px;
-  transform-style: preserve-3d;
+  perspective: 1200px;
 }
 
 /* Outer Rose-Gold Bezel Ridge */
@@ -241,18 +240,18 @@
   cursor: pointer;
   transform-origin: 0% 50%; /* Left mechanical hinge pivot */
   transform-style: preserve-3d;
-  transition: transform 0.75s cubic-bezier(0.18, 0.9, 0.28, 1.12), filter 0.75s ease;
+  transition: transform 0.72s cubic-bezier(0.18, 0.9, 0.28, 1.12), box-shadow 0.72s ease;
   z-index: 20;
-  transform: rotateY(0deg) translateZ(8px);
-  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.55));
+  transform: rotateY(0deg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
   will-change: transform;
   box-sizing: border-box;
 }
 
-/* Open state: Realistic 125° swing out to the left, framed at side, zero opacity fading! */
+/* Open state: Realistic 110° swing out to the left, framed at side, zero opacity fading! */
 .hunter-lid.is-open {
-  transform: rotateY(-124deg) translateZ(4px);
-  filter: drop-shadow(-16px 14px 32px rgba(0, 0, 0, 0.65));
+  transform: rotateY(-110deg) scale(0.92);
+  box-shadow: -12px 14px 28px rgba(0, 0, 0, 0.45);
   pointer-events: auto;
 }
 
@@ -262,18 +261,18 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.25s ease;
 }
 
 /* Outer Front Cover (Engraved Monogram & Sacramento Crest) */
 .lid-outer-face {
-  transform: rotateY(0deg);
+  opacity: 1;
+  visibility: visible;
   background: radial-gradient(
     circle at 35% 35%,
     #FCEBE6 0%,
@@ -289,9 +288,16 @@
   padding: 1.5rem;
 }
 
+.hunter-lid.is-open .lid-outer-face {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0.08s;
+}
+
 /* Inner Back Cover (Swiss Guilloché Perlage & CBI Crest Plate) */
 .lid-inner-face {
-  transform: rotateY(180deg);
+  opacity: 0;
+  visibility: hidden;
   background: radial-gradient(
     circle at 50% 50%,
     #FAF0D7 0%,
@@ -304,6 +310,13 @@
     inset 0 0 16px rgba(0, 0, 0, 0.45),
     inset 0 0 35px rgba(184, 150, 78, 0.6);
   padding: 1.25rem;
+  transform: scaleX(-1);
+}
+
+.hunter-lid.is-open .lid-inner-face {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.22s;
 }
 
 .lid-inner-perlage {
