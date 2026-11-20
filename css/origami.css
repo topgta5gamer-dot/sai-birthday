@@ -1,0 +1,196 @@
+/**
+ * css/origami.css
+ * 17 Drifting Origami Cranes & Micro-Compliments.
+ * Section 6: Drifting physics with CSS transform & opacity only.
+ */
+
+.cranes-sky {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Individual Floating Heart Capsule */
+.origami-crane-capsule {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+  will-change: transform, opacity;
+}
+
+.origami-crane-capsule:hover {
+  z-index: 50;
+  transform: scale(1.22) translateY(-4px) !important;
+  filter: drop-shadow(0 8px 18px rgba(220, 20, 60, 0.45));
+}
+
+.origami-crane-capsule.is-active {
+  z-index: 60;
+  transform: scale(1.28) translateY(-6px) !important;
+  filter: drop-shadow(0 0 16px rgba(230, 57, 70, 0.65)) drop-shadow(0 10px 24px rgba(155, 17, 30, 0.5));
+}
+
+.origami-heart-svg {
+  width: 44px;
+  height: 40px;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgba(43, 27, 26, 0.28));
+  transition: transform 0.3s ease;
+  animation: heartIdlePulse 3.4s ease-in-out infinite;
+}
+
+@keyframes heartIdlePulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  20% {
+    transform: scale(1.08) rotate(-3deg);
+  }
+  40% {
+    transform: scale(0.98) rotate(2deg);
+  }
+  60% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+  80% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Found status indicator - glowing ruby gold aura */
+.origami-crane-capsule.is-found .origami-heart-svg {
+  filter: drop-shadow(0 0 14px rgba(247, 37, 133, 0.7)) drop-shadow(0 0 6px rgba(230, 57, 70, 0.85));
+  animation: heartFoundBeat 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes heartFoundBeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.18); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  70% { transform: scale(1); }
+}
+
+/* Compliment Tag Popup: Ornate Ruby Gold Styling */
+.crane-compliment-tag {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.9);
+  background: #FFFDF9;
+  border: 1.5px solid var(--color-vintage-gold);
+  box-shadow: 
+    0 12px 28px rgba(43, 27, 26, 0.22),
+    0 2px 6px rgba(155, 17, 30, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  width: max-content;
+  max-width: 250px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 60;
+  text-align: center;
+}
+
+.origami-crane-capsule:hover .crane-compliment-tag,
+.origami-crane-capsule.is-active .crane-compliment-tag {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.crane-compliment-tag.align-left {
+  left: 0;
+  transform: translateY(8px) scale(0.9);
+}
+
+.origami-crane-capsule:hover .crane-compliment-tag.align-left,
+.origami-crane-capsule.is-active .crane-compliment-tag.align-left {
+  transform: translateY(0) scale(1);
+}
+
+.crane-compliment-tag.align-right {
+  left: auto;
+  right: 0;
+  transform: translateY(8px) scale(0.9);
+}
+
+.origami-crane-capsule:hover .crane-compliment-tag.align-right,
+.origami-crane-capsule.is-active .crane-compliment-tag.align-right {
+  transform: translateY(0) scale(1);
+}
+
+.crane-tag-num {
+  font-family: var(--font-typewriter);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--color-ruby);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.crane-tag-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  line-height: 1.35;
+}
+
+/* Secret Hearts Found HUD Counter */
+.cranes-hud-counter {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  background: rgba(251, 246, 238, 0.94);
+  border: 1.5px solid var(--color-vintage-gold);
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  font-family: var(--font-typewriter);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--color-ruby);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(43, 27, 26, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.cranes-hud-counter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(155, 17, 30, 0.22);
+  border-color: var(--color-ruby);
+}
+
+.cranes-hud-counter.all-found {
+  background: linear-gradient(135deg, #B51E2B 0%, #9B111E 60%, #6E0D15 100%);
+  color: #FFF2CC;
+  border-color: #E6C87C;
+  box-shadow: 0 0 22px rgba(155, 17, 30, 0.55), 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* Reduced Motion Alternative (Section 5.7) */
+@media (prefers-reduced-motion: reduce) {
+  .origami-crane-capsule {
+    animation: none !important;
+    position: static;
+    display: inline-block;
+  }
+  .crane-wing-left, .crane-wing-right {
+    animation: none !important;
+  }
+}
