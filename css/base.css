@@ -49,6 +49,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   width: 100%;
+  position: relative;
 }
 
 /* Focus styles for accessibility (Section 5.10) */
