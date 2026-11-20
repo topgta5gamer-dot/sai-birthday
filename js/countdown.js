@@ -24,6 +24,7 @@ class PocketWatchController {
     this.setupCrownWinding();
     this.setupMuteToggle();
     this.renderMonograms();
+    this.setupParallaxGlare();
 
     // Subscribe to clock updates
     clock.subscribe((rem) => {
@@ -56,6 +57,37 @@ class PocketWatchController {
     const initials = CONFIG.initials || 'XY';
     if (this.monogramLid) this.monogramLid.textContent = initials;
     if (this.monogramDial) this.monogramDial.textContent = initials;
+  }
+
+  setupParallaxGlare() {
+    this.glareEl = document.querySelector('.watch-glass-glare');
+    this.watchChainAnchor = document.querySelector('.watch-chain-anchor');
+    if (!this.glareEl) return;
+
+    // Mouse movement glint on desktop
+    window.addEventListener('mousemove', (e) => {
+      const xPercent = (e.clientX / window.innerWidth - 0.5) * 26;
+      const yPercent = (e.clientY / window.innerHeight - 0.5) * 26;
+      if (this.glareEl) {
+        this.glareEl.style.transform = `translate3d(${xPercent}px, ${yPercent}px, 0)`;
+      }
+    }, { passive: true });
+
+    // Gyroscope tilt on mobile
+    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        if (e.gamma !== null && e.beta !== null) {
+          const tiltX = Math.max(-25, Math.min(25, e.gamma * 0.75));
+          const tiltY = Math.max(-25, Math.min(25, (e.beta - 45) * 0.75));
+          if (this.glareEl) {
+            this.glareEl.style.transform = `translate3d(${tiltX}px, ${tiltY}px, 0)`;
+          }
+          if (this.watchChainAnchor) {
+            this.watchChainAnchor.style.transform = `rotate(${tiltX * 0.22}deg)`;
+          }
+        }
+      }, { passive: true });
+    }
   }
 
   setupLidInteractivity() {
