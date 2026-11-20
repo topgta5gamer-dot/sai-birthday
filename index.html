@@ -235,6 +235,9 @@
                 <button type="button" class="vinyl-btn" id="vinyl-mute-btn">
                   <span>🔊 Mute</span>
                 </button>
+                <button type="button" class="vinyl-btn vinyl-ambient-btn" id="vinyl-ambient-btn" title="Toggle cozy gentle rain &amp; vinyl needle crackle">
+                  <span>🌧 Rain: Off</span>
+                </button>
               </div>
             </div>
           </div>
@@ -264,6 +267,7 @@
             <div class="letter-top-meta">
               <span>CBI Confidential Dispatch &bull; Personal</span>
               <div class="letter-actions-group">
+                <button type="button" class="letter-btn letter-print-btn" id="letter-print-btn" title="Save / Print Official CBI Dispatch">📜 Save Dispatch</button>
                 <button type="button" class="letter-btn" id="letter-skip-btn">Skip Animation</button>
                 <button type="button" class="letter-btn letter-close-btn" id="letter-close-btn" title="Fold letter &amp; close envelope">✉ Fold &amp; Close</button>
               </div>
@@ -277,9 +281,45 @@
             </div>
 
             <div class="letter-bottom-actions">
+              <button type="button" class="letter-btn letter-print-bottom-btn" id="letter-print-bottom-btn" title="Save / Print Official CBI Dispatch">📜 Save Dispatch (PDF/Print)</button>
               <button type="button" class="letter-btn letter-close-btn letter-close-bottom-btn" id="letter-close-bottom-btn" title="Fold letter &amp; close envelope">✉ Fold &amp; Close Envelope</button>
             </div>
           </article>
+
+          <!-- ================= SAI'S SECRET BIRTHDAY WISH JAR ================= -->
+          <div class="wish-jar-section" id="wish-jar-section">
+            <div class="wish-jar-assembly" id="wish-jar-assembly" role="button" tabindex="0" aria-label="Make a secret birthday wish">
+              <div class="wish-jar-icon-wrap">
+                <svg class="wish-jar-svg" viewBox="0 0 70 95" aria-hidden="true">
+                  <!-- Cork Stopper with Gold Seal -->
+                  <polygon points="26,4 44,4 47,15 23,15" fill="#C48E72" stroke="#543324" stroke-width="1.5" />
+                  <rect x="20" y="15" width="30" height="6" rx="2" fill="#8A4B3A" stroke="#4A2518" stroke-width="1.2" />
+                  <!-- Glass Neck & Body -->
+                  <path d="M 23,21 L 23,26 Q 14,32 14,45 L 14,80 Q 14,90 24,90 L 46,90 Q 56,90 56,80 L 56,45 Q 56,32 47,26 L 47,21 Z" fill="rgba(255, 253, 249, 0.45)" stroke="#B8964E" stroke-width="2" />
+                  <path d="M 18,36 Q 18,85 24,85" fill="none" stroke="#FFF" stroke-width="2.5" opacity="0.65" stroke-linecap="round" />
+                  <!-- Floating Golden Wish Sparks -->
+                  <circle class="wish-orb wish-orb-1" cx="35" cy="55" r="4" fill="#F5D77F" />
+                  <circle class="wish-orb wish-orb-2" cx="42" cy="70" r="3" fill="#FF8095" />
+                  <circle class="wish-orb wish-orb-3" cx="28" cy="68" r="3.5" fill="#FFF2CC" />
+                </svg>
+              </div>
+              <div class="wish-jar-meta">
+                <span class="wish-jar-tag">CBI Classified Keepsake</span>
+                <h4 class="wish-jar-title">Sai's Secret Birthday Wish</h4>
+                <p class="wish-jar-desc" id="wish-jar-status-desc">Click jar to seal a private wish for the year ahead</p>
+              </div>
+            </div>
+
+            <!-- Interactive Wish Input Box -->
+            <div class="wish-input-card" id="wish-input-card">
+              <label for="wish-text-input" class="wish-input-label">"Whisper a wish for this year. Once sealed in the jar, it stays private forever."</label>
+              <textarea id="wish-text-input" class="wish-textarea" placeholder="Type your secret birthday wish here..." rows="3" maxlength="280"></textarea>
+              <div class="wish-actions-row">
+                <button type="button" class="wish-btn wish-seal-btn" id="wish-seal-btn">🔒 Seal Wish into Jar</button>
+                <button type="button" class="wish-btn wish-cancel-btn" id="wish-cancel-btn">Cancel</button>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- ================= PATRICK JANE'S MEMORY PALACE ================= -->
@@ -323,6 +363,33 @@
 
           <!-- 3 Face-Down Cards Grid -->
           <div class="cards-trio-grid" id="cards-trio-grid"></div>
+
+          <!-- ================= PATRICK JANE'S BIOMETRIC PULSE CHECK ================= -->
+          <div class="pulse-check-section" id="pulse-check-section">
+            <div class="pulse-pad-card" id="pulse-pad-card" role="button" tabindex="0" aria-label="Touch and hold to test pulse for Patrick Jane's biometric deduction">
+              <div class="pulse-ring-anim" id="pulse-ring-anim"></div>
+              <div class="pulse-thumb-symbol">
+                <svg viewBox="0 0 48 48" class="pulse-thumb-svg" aria-hidden="true">
+                  <path d="M 24,6 C 14,6 8,14 8,24 C 8,30 11,36 15,40" fill="none" stroke="#B8964E" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M 24,12 C 17,12 13,17 13,24 C 13,31 16,36 19,39" fill="none" stroke="#C9184A" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M 24,18 C 20,18 18,21 18,25 C 18,30 20,34 23,37" fill="none" stroke="#B8964E" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M 33,40 C 37,36 40,30 40,24 C 40,14 34,6 24,6" fill="none" stroke="#B8964E" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M 29,39 C 32,36 35,31 35,24 C 35,17 31,12 24,12" fill="none" stroke="#C9184A" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M 25,37 C 28,34 30,30 30,25 C 30,21 28,18 24,18" fill="none" stroke="#B8964E" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="pulse-info-meta">
+                <span class="pulse-badge">CBI Consultant Biometrics</span>
+                <h4 class="pulse-title">Jane's Pulse Deduction</h4>
+                <p class="pulse-instruction" id="pulse-instruction">Press &amp; hold thumb to test your pulse...</p>
+              </div>
+            </div>
+
+            <div class="pulse-verdict-box" id="pulse-verdict-box" aria-live="polite">
+              <span class="pulse-verdict-stamp">Verified CBI Deduction</span>
+              <p class="pulse-verdict-quote" id="pulse-verdict-quote"></p>
+            </div>
+          </div>
 
           <!-- Finale Gift Riddle -->
           <div class="finale-gift-block">
