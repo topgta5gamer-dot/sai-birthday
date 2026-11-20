@@ -1,0 +1,251 @@
+/**
+ * css/teacup.css
+ * Handcrafted Victorian porcelain teacup with animated curling steam and speech quote card.
+ * Plus: A sleeping curled cat companion easter egg.
+ */
+
+.teacup-station {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.teacup-interactive {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.teacup-interactive:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.teacup-interactive.is-sipping {
+  animation: cupSip 0.6s ease-in-out;
+}
+
+@keyframes cupSip {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(-16deg) translateY(-8px); }
+  70% { transform: rotate(-8deg) translateY(-4px); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Teacup Steam */
+.teacup-steam-svg {
+  position: absolute;
+  top: -42px;
+  left: 12px;
+  width: 54px;
+  height: 48px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.steam-path {
+  fill: none;
+  stroke: rgba(201, 138, 59, 0.4);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 18 10;
+  opacity: 0;
+  transform-origin: bottom center;
+}
+
+.steam-1 {
+  animation: steamRise 3.6s ease-in-out infinite;
+}
+
+.steam-2 {
+  animation: steamRise 3.6s ease-in-out 1.2s infinite;
+}
+
+.steam-3 {
+  animation: steamRise 3.6s ease-in-out 2.4s infinite;
+}
+
+@keyframes steamRise {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scaleX(0.8) scaleY(0.7);
+  }
+  35% {
+    opacity: 0.65;
+    transform: translateY(-8px) scaleX(1.1) scaleY(1);
+  }
+  75% {
+    opacity: 0.3;
+    transform: translateY(-24px) scaleX(1.3) scaleY(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-38px) scaleX(1.5) scaleY(1.3);
+  }
+}
+
+.teacup-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 12px rgba(43, 27, 26, 0.18));
+}
+
+/* Hanging Teabag Tag */
+.teabag-tag {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: var(--color-porcelain);
+  border: 1px solid var(--color-vintage-gold);
+  color: var(--color-ruby);
+  font-family: var(--font-typewriter);
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 0.12rem 0.3rem;
+  border-radius: 2px;
+  transform: rotate(12deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.teacup-interactive:hover .teabag-tag {
+  transform: rotate(20deg) scale(1.05);
+}
+
+/* Quote Speech Card: Screen-bound */
+.teacup-quote-card {
+  position: absolute;
+  bottom: 95px;
+  left: 0;
+  width: min(320px, calc(100vw - 3rem));
+  max-width: calc(100vw - 3rem);
+  background: var(--color-porcelain);
+  border: 1px solid var(--color-vintage-gold);
+  box-shadow: 0 12px 30px rgba(43, 27, 26, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.15rem;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 101;
+  box-sizing: border-box;
+}
+
+.teacup-quote-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.teacup-quote-card::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 32px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-porcelain);
+  border-right: 1px solid var(--color-vintage-gold);
+  border-bottom: 1px solid var(--color-vintage-gold);
+  transform: rotate(45deg);
+}
+
+.quote-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  line-height: 1.45;
+  margin-bottom: 0.45rem;
+  overflow-wrap: break-word;
+}
+
+.quote-source {
+  font-family: var(--font-typewriter);
+  font-size: 0.68rem;
+  color: var(--color-ruby);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.quote-tip {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  color: var(--color-ink-faint);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ================= SLEEPING CAT EASTER EGG ================= */
+.cozy-cat-companion {
+  position: relative;
+  width: 48px;
+  height: 38px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 3px 6px rgba(43, 27, 26, 0.18));
+}
+
+.cozy-cat-companion:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+.cat-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cat-purr-toast {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--color-porcelain);
+  border: 1px solid var(--color-ruby);
+  color: var(--color-ruby);
+  font-family: var(--font-typewriter);
+  font-size: 0.62rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.cozy-cat-companion:hover .cat-purr-toast,
+.cat-purr-toast.is-purring {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 600px) {
+  .teacup-station {
+    bottom: 0.75rem;
+    left: 0.75rem;
+  }
+  .teacup-interactive {
+    width: 68px;
+    height: 68px;
+  }
+  .cozy-cat-companion {
+    width: 40px;
+    height: 32px;
+  }
+}
