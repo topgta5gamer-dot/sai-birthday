@@ -39,6 +39,11 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
 html, body {
   min-height: 100vh;
   background-color: var(--color-porcelain);
