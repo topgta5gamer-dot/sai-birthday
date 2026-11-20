@@ -15,24 +15,25 @@
   pointer-events: none;
   z-index: 25;
   overflow: hidden;
+  contain: layout style;
 }
 
-/* Drifting organic flight / bobbing physics */
+/* Drifting organic flight / bobbing physics (3D GPU accelerated) */
 @keyframes craneFloat {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
   25% {
-    transform: translate(6px, -14px) rotate(3deg);
+    transform: translate3d(6px, -14px, 0) rotate(3deg);
   }
   50% {
-    transform: translate(-5px, -24px) rotate(-3deg);
+    transform: translate3d(-5px, -24px, 0) rotate(-3deg);
   }
   75% {
-    transform: translate(4px, -12px) rotate(2deg);
+    transform: translate3d(4px, -12px, 0) rotate(2deg);
   }
   100% {
-    transform: translate(-2px, -4px) rotate(-1deg);
+    transform: translate3d(-2px, -4px, 0) rotate(-1deg);
   }
 }
 
@@ -42,8 +43,12 @@
   pointer-events: auto;
   cursor: pointer;
   transform-origin: center center;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-  will-change: transform, opacity;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout style;
   padding: 8px;
   margin: -8px;
   touch-action: manipulation;
@@ -52,13 +57,13 @@
 
 .origami-crane-capsule:hover {
   z-index: 80;
-  transform: scale(1.22) translateY(-4px) !important;
+  transform: scale(1.22) translate3d(0, -4px, 0) !important;
   filter: drop-shadow(0 8px 18px rgba(220, 20, 60, 0.45));
 }
 
 .origami-crane-capsule.is-active {
   z-index: 90;
-  transform: scale(1.28) translateY(-6px) !important;
+  transform: scale(1.28) translate3d(0, -6px, 0) !important;
   filter: drop-shadow(0 0 16px rgba(230, 57, 70, 0.65)) drop-shadow(0 10px 24px rgba(155, 17, 30, 0.5));
 }
 
@@ -66,41 +71,43 @@
   width: 44px;
   height: 40px;
   overflow: visible;
-  filter: drop-shadow(0 4px 8px rgba(43, 27, 26, 0.28));
+  filter: drop-shadow(0 3px 6px rgba(43, 27, 26, 0.25));
   transition: transform 0.3s ease;
   animation: heartIdlePulse 3.4s ease-in-out infinite;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @keyframes heartIdlePulse {
   0%, 100% {
-    transform: scale(1) rotate(0deg);
+    transform: translateZ(0) scale(1) rotate(0deg);
   }
   20% {
-    transform: scale(1.08) rotate(-3deg);
+    transform: translateZ(0) scale(1.08) rotate(-3deg);
   }
   40% {
-    transform: scale(0.98) rotate(2deg);
+    transform: translateZ(0) scale(0.98) rotate(2deg);
   }
   60% {
-    transform: scale(1.05) rotate(-1deg);
+    transform: translateZ(0) scale(1.05) rotate(-1deg);
   }
   80% {
-    transform: scale(1) rotate(0deg);
+    transform: translateZ(0) scale(1) rotate(0deg);
   }
 }
 
-/* Found status indicator - glowing ruby gold aura */
+/* Found status indicator - glowing ruby gold aura (GPU optimized) */
 .origami-crane-capsule.is-found .origami-heart-svg {
-  filter: drop-shadow(0 0 14px rgba(247, 37, 133, 0.7)) drop-shadow(0 0 6px rgba(230, 57, 70, 0.85));
+  filter: drop-shadow(0 0 10px rgba(247, 37, 133, 0.75));
   animation: heartFoundBeat 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes heartFoundBeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.18); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.1); }
-  70% { transform: scale(1); }
+  0%, 100% { transform: translateZ(0) scale(1); }
+  14% { transform: translateZ(0) scale(1.18); }
+  28% { transform: translateZ(0) scale(1); }
+  42% { transform: translateZ(0) scale(1.1); }
+  70% { transform: translateZ(0) scale(1); }
 }
 
 /* Compliment Tag Popup: Ornate Ruby Gold Styling */
