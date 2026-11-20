@@ -6,14 +6,23 @@
  */
 
 .envelope-section {
+  position: relative;
+  z-index: 15; /* Sits underneath turntable in stacking order */
   width: 100%;
   max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: clamp(4.5rem, 11vw, 6rem);
   perspective: 1200px;
   box-sizing: border-box;
+  transition: margin-top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When envelope is opened, expand margin so the flipped 180° flap stays completely below the music disc */
+.envelope-section.is-open,
+.envelope-section:has(.envelope-assembly.is-open) {
+  margin-top: clamp(13rem, 32vw, 17.5rem);
 }
 
 /* 3D Envelope Wrapper */
@@ -111,7 +120,8 @@
 .envelope-assembly.is-open .envelope-top-flap {
   transform: rotateX(180deg);
   z-index: 8;
-  filter: none;
+  filter: drop-shadow(0 -3px 6px rgba(0, 0, 0, 0.12));
+  pointer-events: none;
 }
 
 /* Red Wax Seal Stamp with Gold Trim & 3D Depth */
