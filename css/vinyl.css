@@ -309,3 +309,10 @@
   color: #FFF;
   transform: translateY(-1px);
 }
+
+.vinyl-ambient-btn.is-active {
+  background: rgba(201, 138, 59, 0.32);
+  border-color: #F5D77F;
+  color: #FFF2CC;
+  box-shadow: 0 0 14px rgba(245, 215, 127, 0.45);
+}
