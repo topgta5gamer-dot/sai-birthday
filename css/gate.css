@@ -1,0 +1,148 @@
+/**
+ * css/gate.css
+ * Option B: CBI Confidential Clearance Passcode Gate.
+ * Optimized: Responsive layout fitting screens down to 320px.
+ */
+
+.passcode-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 27, 26, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: opacity 0.6s ease;
+  box-sizing: border-box;
+}
+
+.gate-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blurred-locked {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.gate-card {
+  background: #FFFDF9;
+  border: 1.5px solid var(--color-vintage-gold);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 4px 15px rgba(155, 17, 30, 0.2),
+    inset 0 0 25px rgba(201, 138, 59, 0.05);
+  border-radius: var(--radius-md);
+  max-width: min(400px, 94vw);
+  width: 100%;
+  padding: clamp(1.75rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem);
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.gate-stamp {
+  display: inline-block;
+  font-family: var(--font-typewriter);
+  color: var(--color-ruby);
+  border: 2px solid var(--color-ruby);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  transform: rotate(-2deg);
+  background: rgba(155, 17, 30, 0.05);
+}
+
+.gate-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+
+.gate-desc {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-ink-faint);
+  margin: 0.5rem 0 1.5rem;
+  line-height: 1.4;
+}
+
+.pin-container {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 0.85rem);
+  margin-bottom: 1rem;
+}
+
+.pin-digit {
+  width: clamp(44px, 12vw, 56px);
+  height: clamp(54px, 15vw, 66px);
+  font-family: var(--font-typewriter);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 700;
+  text-align: center;
+  background: var(--color-blush);
+  border: 2px solid rgba(184, 150, 78, 0.4);
+  border-radius: var(--radius-sm);
+  color: var(--color-ruby);
+  transition: all 0.2s ease;
+  caret-color: transparent;
+  box-sizing: border-box;
+}
+
+.pin-digit:focus {
+  border-color: var(--color-ruby);
+  outline: none;
+  background: #FFF;
+  box-shadow: 0 0 0 3px rgba(155, 17, 30, 0.15);
+  transform: translateY(-2px);
+}
+
+.pin-digit.pin-shake {
+  animation: shake 0.4s ease-in-out;
+  border-color: var(--color-ruby);
+  background: rgba(155, 17, 30, 0.1);
+}
+
+.pin-digit.pin-success {
+  border-color: #2D6A4F;
+  background: rgba(45, 106, 79, 0.1);
+  color: #2D6A4F;
+}
+
+.gate-error {
+  font-family: var(--font-typewriter);
+  font-size: 0.78rem;
+  color: var(--color-ruby);
+  min-height: 1.2rem;
+  margin-top: 0.4rem;
+}
+
+.gate-error.success-text {
+  color: #2D6A4F;
+}
+
+.gate-hint {
+  font-size: 0.72rem;
+  font-family: var(--font-typewriter);
+  color: var(--color-ink-faint);
+  margin-top: 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
