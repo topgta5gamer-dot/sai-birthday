@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-state="locked">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tick tock…</title>
+
+  <!-- Privacy (Section 5.8) -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Open Graph & Twitter Cards (Zero Spoilers) -->
+  <meta property="og:title" content="Tick tock…">
+  <meta property="og:description" content="Something is about to happen.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Tick tock…">
+  <meta name="twitter:description" content="Something is about to happen.">
+
+  <!-- Fonts (Editorial serif, Typewriter & Handwritten Letter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Homemade+Apple&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/paper.css">
+  <link rel="stylesheet" href="css/watch.css">
+  <link rel="stylesheet" href="css/teacup.css">
+  <link rel="stylesheet" href="css/origami.css">
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/vinyl.css">
+  <link rel="stylesheet" href="css/envelope.css">
+  <link rel="stylesheet" href="css/palace.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/easteregg.css">
+  <link rel="stylesheet" href="css/gate.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Analog Paper Grain Filter (feTurbulence - Section 2) -->
+  <svg class="paper-grain-overlay" aria-hidden="true">
+    <filter id="paper-noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.07 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#paper-noise)" fill="#808080" />
+  </svg>
+
+  <!-- Atmospheric Vignette -->
+  <div class="vignette-overlay" aria-hidden="true"></div>
+
+  <!-- Organic Tea Ring Stains -->
+  <svg class="tea-stain" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="42" fill="none" stroke="#C98A3B" stroke-width="2.5" stroke-dasharray="12 4 8 3" opacity="0.4" />
+    <circle cx="51" cy="49" r="40" fill="none" stroke="#8A4B3A" stroke-width="1.2" stroke-dasharray="25 6 15 4" opacity="0.3" />
+  </svg>
+  <svg class="tea-stain-secondary" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#C98A3B" stroke-width="2" stroke-dasharray="9 3 14 5" opacity="0.35" />
+  </svg>
+
+  <!-- Confetti Canvas -->
+  <canvas class="confetti-canvas" id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Rose Petals Canvas for Midnight Reveal -->
+  <canvas class="petals-canvas" id="petals-canvas" aria-hidden="true"></canvas>
+
+  <!-- Background Music Audio Element -->
+  <audio id="bg-music"></audio>
+
+  <!-- Drifting Red Hearts Sky -->
+  <div class="cranes-sky" id="cranes-sky" aria-label="17 Floating Red Hearts"></div>
+
+  <!-- Secret Hearts HUD Counter -->
+  <div class="cranes-hud-counter" id="cranes-hud-counter" role="status" aria-live="polite">
+    <span>💖</span> <span>0 / 17 Hearts Discovered</span>
+  </div>
+
+  <!-- Option B: 4-Digit Passcode Gate (CBI Clearance) -->
+  <div class="passcode-overlay" id="passcode-gate" style="display: none;">
+    <div class="gate-card">
+      <div class="gate-stamp">CBI Confidential Case</div>
+      <h2 class="gate-title">Clearance Required</h2>
+      <p class="gate-desc">"Every lock has a combination. Think like Patrick Jane."</p>
+
+      <div class="pin-container">
+        <input type="text" inputmode="numeric" maxlength="1" class="pin-digit" aria-label="PIN digit 1" autocomplete="off">
+        <input type="text" inputmode="numeric" maxlength="1" class="pin-digit" aria-label="PIN digit 2" autocomplete="off">
+        <input type="text" inputmode="numeric" maxlength="1" class="pin-digit" aria-label="PIN digit 3" autocomplete="off">
+        <input type="text" inputmode="numeric" maxlength="1" class="pin-digit" aria-label="PIN digit 4" autocomplete="off">
+      </div>
+
+      <div class="gate-error" id="gate-error"></div>
+      <p class="gate-hint">Hint: A four-digit date in December (MMDD)</p>
+    </div>
+  </div>
+
+  <!-- App Shell -->
+  <div id="app">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="case-badge">CBI : Curly Baal waala Insaan</div>
+      <h1 class="title-display">A Question of Time</h1>
+      <p class="subtitle">"There is no such thing as luck. Only discipline."</p>
+    </header>
+
+    <!-- Main Stage -->
+    <main class="main-stage">
+      <!-- Status Banner -->
+      <div class="state-banner">
+        <span class="state-badge" id="current-state-badge" data-state="locked">LOCKED</span>
+        <span id="state-notice">Tick tock... Time is moving forward.</span>
+      </div>
+
+      <!-- ================= PHASE 1: PRE-MIDNIGHT COUNTDOWN ================= -->
+      <section class="countdown-container" aria-label="The Victorian Pocket Watch Chronometer">
+        <div class="watch-wrapper">
+          <!-- Swaying Chain -->
+          <div class="watch-chain-anchor">
+            <svg class="watch-chain-svg" viewBox="0 0 100 80" preserveAspectRatio="none">
+              <path d="M 50,0 Q 58,40 50,78" fill="none" stroke="#B8964E" stroke-width="4" stroke-dasharray="4 2" />
+              <path d="M 50,0 Q 42,40 50,78" fill="none" stroke="#7A5E2A" stroke-width="1.5" />
+            </svg>
+          </div>
+
+          <!-- Crown & Winding Assembly -->
+          <div class="watch-crown-assembly" id="watch-crown" role="button" tabindex="0" aria-label="Wind pocket watch mechanism">
+            <span class="crown-hint" id="crown-hint">Press &amp; hold to wind</span>
+            <div class="watch-bow"></div>
+            <div class="watch-crown-knob"></div>
+          </div>
+
+          <!-- Pocket Watch Body -->
+          <div class="pocket-watch">
+            <div class="watch-glass-glare" aria-hidden="true"></div>
+            <div class="watch-bezel-rim">
+              <div class="watch-dial-face">
+                <svg class="watch-dial-svg" viewBox="0 0 200 200" aria-hidden="true">
+                  <circle cx="100" cy="100" r="92" fill="none" stroke="#B8964E" stroke-width="1" opacity="0.6" />
+                  <circle cx="100" cy="100" r="86" fill="none" stroke="#B8964E" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.5" />
+                  <text x="100" y="24" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#FFF2CC" opacity="0.8">XII</text>
+                  <text x="180" y="104" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#FFF2CC" opacity="0.8">III</text>
+                  <text x="100" y="184" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#FFF2CC" opacity="0.8">VI</text>
+                  <text x="20" y="104" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#FFF2CC" opacity="0.8">IX</text>
+                </svg>
+
+                <div class="watch-dial-content">
+                  <div class="watch-monogram" id="dial-monogram-text">S</div>
+
+                  <!-- 4 Integrated Countdown Sub-Dials -->
+                  <div class="chronometer-grid">
+                    <div class="chrono-subdial">
+                      <div class="chrono-value" id="chrono-days">--</div>
+                      <div class="chrono-label">Days</div>
+                    </div>
+                    <div class="chrono-subdial">
+                      <div class="chrono-value" id="chrono-hours">--</div>
+                      <div class="chrono-label">Hours</div>
+                    </div>
+                    <div class="chrono-subdial">
+                      <div class="chrono-value" id="chrono-mins">--</div>
+                      <div class="chrono-label">Minutes</div>
+                    </div>
+                    <div class="chrono-subdial">
+                      <div class="chrono-value" id="chrono-secs">--</div>
+                      <div class="chrono-label">Seconds</div>
+                    </div>
+                  </div>
+
+                  <div class="watch-status-line" id="watch-status-line"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hunter-Case Lid -->
+            <div class="hunter-lid" id="hunter-lid" role="button" tabindex="0" aria-label="Open pocket watch cover">
+              <div class="lid-engraving">
+                <div class="lid-monogram" id="lid-monogram-text">S</div>
+                <div class="lid-subtitle">Sacramento, California</div>
+                <div class="lid-open-prompt">Click to flip open</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="lid-toggle-btn" id="lid-toggle-btn">Flip Lid Open</button>
+          <button type="button" class="watch-audio-toggle" id="watch-mute-toggle" aria-label="Toggle mechanical ticking sound">
+            <span>🔊 Audio On</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= PHASE 2: MIDNIGHT CELEBRATION STAGE ================= -->
+      <section class="celebration-stage" id="celebration-stage" aria-label="Birthday Celebration Stage">
+        <!-- Autoplay Unlock Prompt Callout -->
+        <button type="button" class="needle-prompt-banner" id="needle-prompt-banner">
+          <span>🎵 Place the Needle on the Record</span>
+        </button>
+
+        <header class="celebration-header">
+          <h2 class="celebration-title">Happy Birthday!</h2>
+          <p class="celebration-subtitle">"Does it ever drive you crazy just how fast the night changes?"</p>
+        </header>
+
+        <!-- Retro Vintage Turntable Widget -->
+        <div class="vinyl-player-section">
+          <div class="turntable-plinth">
+            <div class="vinyl-deck">
+              <div class="platter-well"></div>
+              <div class="vinyl-record" id="vinyl-record">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label">
+                  <span class="vinyl-title">Night Changes</span>
+                  <span class="vinyl-artist">One Direction</span>
+                  <div class="vinyl-center-spindle"></div>
+                </div>
+              </div>
+
+              <!-- Animated Brass Tonearm -->
+              <div class="tonearm-assembly" id="tonearm-assembly">
+                <div class="tonearm-base"></div>
+                <svg class="tonearm-wand" viewBox="0 0 85 130">
+                  <path d="M 74,4 L 38,95 L 26,118" fill="none" stroke="#B8964E" stroke-width="3" stroke-linecap="round" />
+                  <path d="M 74,4 L 38,95 L 26,118" fill="none" stroke="#E6C87C" stroke-width="1.2" stroke-linecap="round" />
+                  <polygon points="26,116 18,122 22,128 30,122" fill="#9B111E" stroke="#4A3515" stroke-width="1" />
+                  <line x1="22" y1="128" x2="20" y2="132" stroke="#FFF" stroke-width="1.5" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="vinyl-controls-bar">
+              <div class="track-meta">
+                <span class="track-title-text">Night Changes</span>
+                <span class="track-artist-text">One Direction</span>
+              </div>
+
+              <div class="progress-container">
+                <span id="vinyl-time-current">0:00</span>
+                <div class="progress-track" id="vinyl-progress-track" role="progressbar" aria-label="Song progress">
+                  <div class="progress-fill" id="vinyl-progress-fill"></div>
+                </div>
+                <span id="vinyl-time-duration">3:46</span>
+              </div>
+
+              <div class="vinyl-buttons-row">
+                <button type="button" class="vinyl-btn vinyl-play-btn" id="vinyl-play-btn">
+                  <span>▶ Play</span>
+                </button>
+                <button type="button" class="vinyl-btn" id="vinyl-mute-btn">
+                  <span>🔊 Mute</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= 3D WAX-SEALED ENVELOPE & LETTER ================= -->
+        <section class="envelope-section" aria-label="Wax-Sealed Birthday Letter">
+          <div class="envelope-assembly" id="envelope-assembly">
+            <div class="envelope-pocket"></div>
+            <div class="envelope-front-folds">
+              <div class="fold-left"></div>
+              <div class="fold-right"></div>
+              <div class="fold-bottom"></div>
+            </div>
+            <div class="envelope-top-flap"></div>
+
+            <div class="wax-seal" id="wax-seal" role="button" tabindex="0" aria-label="Break red wax seal to open letter">
+              <div class="wax-seal-rim">
+                <span class="wax-seal-initial" id="wax-seal-initial">J</span>
+              </div>
+            </div>
+
+            <div class="seal-prompt-badge">Click wax seal to break &amp; read</div>
+          </div>
+
+          <article class="parchment-letter-card" id="parchment-letter-card">
+            <div class="letter-top-meta">
+              <span>CBI Confidential Dispatch &bull; Personal</span>
+              <div class="letter-actions-group">
+                <button type="button" class="letter-btn" id="letter-skip-btn">Skip Animation</button>
+                <button type="button" class="letter-btn letter-close-btn" id="letter-close-btn" title="Fold letter &amp; close envelope">✉ Fold &amp; Close</button>
+              </div>
+            </div>
+
+            <div class="letter-content-body" id="letter-content-body"></div>
+
+            <div class="letter-bonus-line" id="letter-bonus-line">
+              <span class="bonus-badge">💖 Case Clearance: 17 Secret Hearts Discovered</span>
+              <p id="bonus-line-text"></p>
+            </div>
+
+            <div class="letter-bottom-actions">
+              <button type="button" class="letter-btn letter-close-btn letter-close-bottom-btn" id="letter-close-bottom-btn" title="Fold letter &amp; close envelope">✉ Fold &amp; Close Envelope</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- ================= PATRICK JANE'S MEMORY PALACE ================= -->
+        <section class="palace-section" aria-label="Patrick Jane's Memory Palace">
+          <header class="palace-header">
+            <h3 class="palace-title">The Memory Palace</h3>
+            <p class="palace-desc">"Memory is a palace with many rooms. Step inside."</p>
+          </header>
+
+          <!-- Hallway of Doors Navigation -->
+          <nav class="doors-hallway" id="doors-hallway" aria-label="Memory Palace Doors"></nav>
+
+          <!-- Corkboard Evidence Room -->
+          <div class="corkboard-room" id="corkboard-room">
+            <div class="corkboard-header-tag" id="corkboard-case-tag">Case File: Sai</div>
+            <div class="corkboard-grid" id="corkboard-grid"></div>
+          </div>
+        </section>
+
+        <!-- ================= THE MIND-READING GAME & FINALE ================= -->
+        <section class="game-section" aria-label="Patrick Jane's Mind Reading Game">
+          <header class="game-header">
+            <h3 class="game-title">Jane's Deduction</h3>
+            <p class="game-desc">"Think of a card. Don't overthink it. I already know what you'll pick."</p>
+          </header>
+
+          <!-- Sealed Prediction Note -->
+          <div class="prediction-anchor-box">
+            <div class="prediction-folded-note is-locked" id="prediction-folded-note" role="button" tabindex="0">
+              <span class="prediction-ribbon">📜</span>
+              <div class="prediction-label-wrap">
+                <div class="prediction-tag">Confidential Sealed Prediction</div>
+                <div class="prediction-title">Patrick Jane's Sealed Note (Pick a card first)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prediction-reveal-card" id="prediction-reveal-card">
+            <p id="prediction-reveal-text"></p>
+          </div>
+
+          <!-- 3 Face-Down Cards Grid -->
+          <div class="cards-trio-grid" id="cards-trio-grid"></div>
+
+          <!-- Finale Gift Riddle -->
+          <div class="finale-gift-block">
+            <div class="finale-stamp">Case Closed &bull; Final Mystery</div>
+            <h4 class="finale-title">The Consultant's Final Clue</h4>
+            <p class="finale-desc">"One final secret remains before the case is closed..."</p>
+            <button type="button" class="riddle-unlock-btn" id="riddle-unlock-btn">🔍 Read Final Clue</button>
+            <div class="riddle-scroll-box" id="riddle-scroll-box">
+              <p class="riddle-text" id="finale-riddle-text"></p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Steaming Porcelain Teacup Station -->
+    <aside class="teacup-station" aria-label="Patrick Jane Teacup Station">
+      <div class="teacup-quote-card" id="teacup-quote-card" role="region" aria-label="Patrick Jane Quote">
+        <p class="quote-text" id="quote-card-text">"Tea? A good cup of tea solves everything."</p>
+        <div class="quote-source">
+          <span id="quote-card-source">— Patrick Jane</span>
+          <span class="quote-tip">Click cup for another</span>
+        </div>
+      </div>
+
+      <div class="teacup-interactive" id="teacup-interactive" role="button" tabindex="0" aria-label="Take a sip of tea">
+        <svg class="teacup-steam-svg" viewBox="0 0 60 50" aria-hidden="true">
+          <path class="steam-path steam-1" d="M 18,45 Q 10,25 22,12 T 26,0" />
+          <path class="steam-path steam-2" d="M 30,45 Q 40,28 28,15 T 34,0" />
+          <path class="steam-path steam-3" d="M 42,45 Q 34,25 44,14 T 40,0" />
+        </svg>
+
+        <svg class="teacup-svg" viewBox="0 0 100 85" aria-hidden="true">
+          <ellipse cx="50" cy="72" rx="44" ry="10" fill="#FBF6EE" stroke="#B8964E" stroke-width="1.5" />
+          <ellipse cx="50" cy="70" rx="34" ry="6" fill="#F4DAD6" opacity="0.6" />
+          <path d="M 72,36 C 88,36 88,58 72,58" fill="none" stroke="#B8964E" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M 22,26 L 30,64 C 32,68 68,68 70,64 L 78,26 Z" fill="#FBF6EE" stroke="#B8964E" stroke-width="2" />
+          <path d="M 22,26 Q 50,29 78,26" fill="none" stroke="#9B111E" stroke-width="2" />
+          <ellipse cx="50" cy="32" rx="24" ry="4" fill="#C98A3B" opacity="0.75" />
+        </svg>
+
+        <div class="teabag-tag">JASMINE</div>
+      </div>
+
+      <!-- Cozy Sleeping Cat Companion Easter Egg -->
+      <div class="cozy-cat-companion" id="cozy-cat-companion" role="button" tabindex="0" aria-label="Pet the sleeping cat" title="Pet the cat">
+        <span class="cat-purr-toast" id="cat-purr-toast">💖 Purrr... *happy cat noises*</span>
+        <svg class="cat-svg" viewBox="0 0 60 48" aria-hidden="true">
+          <!-- Curled Cat Body -->
+          <ellipse cx="28" cy="30" rx="22" ry="14" fill="#2B1B1A" />
+          <!-- Cat Head -->
+          <circle cx="44" cy="24" r="11" fill="#2B1B1A" />
+          <!-- Ears -->
+          <polygon points="40,16 44,8 48,16" fill="#2B1B1A" />
+          <polygon points="48,16 52,9 55,18" fill="#2B1B1A" />
+          <!-- Closed Sleeping Eyes -->
+          <path d="M 42,24 Q 45,26 48,24" fill="none" stroke="#FBF6EE" stroke-width="1.2" stroke-linecap="round" />
+          <!-- Curled Tail -->
+          <path d="M 8,32 C 6,22 14,18 20,22" fill="none" stroke="#2B1B1A" stroke-width="4.5" stroke-linecap="round" />
+        </svg>
+      </div>
+    </aside>
+
+    <!-- Footer with Hidden Friendly Red John Smiley -->
+    <footer class="site-footer">
+      <p>
+        <span class="friendly-smiley-wrapper" id="friendly-smiley-egg" role="button" tabindex="0" title="A friendly greeting">
+          <svg class="friendly-smiley-svg" viewBox="0 0 32 32" aria-hidden="true">
+            <polygon points="16,3 10,13 22,13" fill="#B8964E" stroke="#9B111E" stroke-width="1" />
+            <circle cx="16" cy="3" r="2" fill="#9B111E" />
+            <circle cx="16" cy="20" r="10" fill="none" stroke="#9B111E" stroke-width="2" />
+            <circle cx="12" cy="18" r="1.5" fill="#9B111E" />
+            <circle cx="20" cy="18" r="1.5" fill="#9B111E" />
+            <path d="M 12,23 Q 16,27 20,23" fill="none" stroke="#9B111E" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
