@@ -150,28 +150,6 @@ html, body {
   display: none !important;
 }
 
-.state-badge {
-  font-family: var(--font-typewriter);
-  font-size: 0.72rem;
-  font-weight: bold;
-  padding: 0.15rem 0.45rem;
-  border-radius: 3px;
-  background: var(--color-ink);
-  color: var(--color-porcelain);
-}
-
-.state-badge[data-state="final-minute"] {
-  background: var(--color-ruby);
-}
-
-.state-badge[data-state="revealing"] {
-  background: var(--color-vintage-gold);
-}
-
-.state-badge[data-state="unlocked"] {
-  background: #2D6A4F;
-}
-
 /* Footer */
 .site-footer {
   text-align: center;
