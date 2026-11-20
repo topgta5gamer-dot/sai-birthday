@@ -17,6 +17,7 @@ class EnvelopeManager {
   }
 
   async init() {
+    this.sectionEl = document.getElementById('envelope-section') || document.querySelector('.envelope-section');
     this.assemblyEl = document.getElementById('envelope-assembly');
     this.sealEl = document.getElementById('wax-seal');
     this.sealPromptEl = document.getElementById('seal-prompt-badge');
@@ -97,6 +98,7 @@ class EnvelopeManager {
 
     if (this.sealEl) this.sealEl.classList.add('is-cracked');
     if (this.sealPromptEl) this.sealPromptEl.style.display = 'none';
+    if (this.sectionEl) this.sectionEl.classList.add('is-open');
 
     setTimeout(() => {
       if (this.assemblyEl) this.assemblyEl.classList.add('is-open');
@@ -130,6 +132,9 @@ class EnvelopeManager {
     setTimeout(() => {
       if (this.assemblyEl) {
         this.assemblyEl.classList.remove('is-open');
+      }
+      if (this.sectionEl) {
+        this.sectionEl.classList.remove('is-open');
       }
 
       // 3. Show prompt badge to reopen
