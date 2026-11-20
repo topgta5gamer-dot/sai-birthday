@@ -1,0 +1,371 @@
+/**
+ * css/envelope.css
+ * 3D-Styled Crimson Wax-Sealed Envelope & Handwritten Letter.
+ * Section 7.3: Precision clip-path geometry - Zero boundary overflow.
+ * Interactive Fold/Close Envelope & Reopen capability.
+ */
+
+.envelope-section {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  perspective: 1200px;
+  box-sizing: border-box;
+}
+
+/* 3D Envelope Wrapper */
+.envelope-assembly {
+  position: relative;
+  width: clamp(280px, 86vw, 460px);
+  height: clamp(180px, 55vw, 290px);
+  margin-bottom: 2rem;
+  transition: transform 0.6s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.envelope-assembly:hover:not(.is-open) {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Envelope Body */
+.envelope-pocket {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #8A0E18 0%, #9B111E 60%, #6E0D15 100%);
+  border-radius: var(--radius-sm);
+  box-shadow: 
+    0 15px 35px rgba(43, 27, 26, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(184, 150, 78, 0.4);
+  z-index: 10;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.envelope-pocket::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* Folded Flaps: 100% Responsive Clip-Path (Never overflows) */
+.envelope-front-folds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.fold-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, #7A0A14, #8C0D1A);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.fold-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 58%;
+  background: linear-gradient(to right, #6E0810, #8A0E18);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.fold-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 58%;
+  background: linear-gradient(to left, #5C070E, #7A0A14);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Top Triangular Flap (Folds Open/Close in 3D) */
+.envelope-top-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64%;
+  background: linear-gradient(to bottom, #A61320, #8C0D1A);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 14;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.envelope-assembly.is-open .envelope-top-flap {
+  transform: rotateX(180deg);
+  z-index: 8;
+  filter: none;
+}
+
+/* Red Wax Seal Stamp with Gold Trim & 3D Depth */
+.wax-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #C9184A 0%, #9B111E 45%, #6E0D15 80%, #3D040A 100%);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(220, 20, 60, 0.35),
+    inset 0 2px 4px rgba(255, 255, 255, 0.45),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(245, 215, 127, 0.55);
+  z-index: 20;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, opacity 0.3s ease, filter 0.2s ease;
+  box-sizing: border-box;
+}
+
+.wax-seal:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  filter: brightness(1.12);
+}
+
+.wax-seal-rim {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 242, 204, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wax-seal-initial {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  font-weight: 700;
+  color: #FFF2CC;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  line-height: 1;
+}
+
+.wax-seal.is-cracked {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.2) rotate(15deg);
+  pointer-events: none;
+}
+
+.seal-prompt-badge {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  color: var(--color-ruby);
+  background: var(--color-porcelain);
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(155, 17, 30, 0.3);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: sealBadgePulse 2s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes sealBadgePulse {
+  0%, 100% { opacity: 0.85; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-2px); }
+}
+
+.envelope-assembly.is-open .seal-prompt-badge {
+  display: none;
+}
+
+/* ================= THE PARCHMENT LETTER ================= */
+.parchment-letter-card {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: #FFFDF9;
+  background-image: 
+    radial-gradient(circle at 12% 12%, rgba(201, 138, 59, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 88% 88%, rgba(155, 17, 30, 0.04) 0%, transparent 45%);
+  border: 1.5px solid rgba(184, 150, 78, 0.45);
+  box-shadow: 
+    0 22px 55px rgba(43, 27, 26, 0.18),
+    0 3px 10px rgba(0, 0, 0, 0.06),
+    inset 0 0 35px rgba(201, 138, 59, 0.04);
+  border-radius: var(--radius-sm);
+  padding: clamp(1.75rem, 5vw, 3rem);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+  display: none;
+  box-sizing: border-box;
+}
+
+.parchment-letter-card.is-unfurled {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(184, 150, 78, 0.35);
+  padding-bottom: 0.65rem;
+  margin-bottom: 1.35rem;
+  font-family: var(--font-typewriter);
+  font-size: 0.72rem;
+  color: var(--color-ink-faint);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.letter-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.letter-btn {
+  background: transparent;
+  border: 1px solid rgba(155, 17, 30, 0.35);
+  color: var(--color-ruby);
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.letter-btn:hover {
+  background: var(--color-blush);
+  border-color: var(--color-ruby);
+  transform: translateY(-1px);
+}
+
+.letter-close-btn {
+  border-color: var(--color-vintage-gold);
+  color: var(--color-ink);
+}
+
+.letter-close-btn:hover {
+  background: var(--color-blush);
+  border-color: var(--color-ruby);
+  color: var(--color-ruby);
+}
+
+.letter-content-body {
+  font-family: 'Homemade Apple', cursive, var(--font-serif);
+  font-size: clamp(1.05rem, 3.3vw, 1.25rem);
+  color: #241413;
+  line-height: 2.05;
+  letter-spacing: 0.015em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.letter-salutation {
+  margin-bottom: 1.15rem;
+  font-size: 1.25rem;
+  color: var(--color-ruby);
+}
+
+.letter-paragraph {
+  margin-bottom: 1.25rem;
+  text-indent: 1rem;
+}
+
+.letter-signoff {
+  margin-top: 1.75rem;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.letter-valediction {
+  font-size: 1.1rem;
+}
+
+.letter-signature {
+  font-size: 1.35rem;
+  color: var(--color-ruby);
+  font-weight: bold;
+}
+
+.letter-bonus-line {
+  margin-top: 1.75rem;
+  padding: 0.85rem 1.15rem;
+  background: rgba(184, 150, 78, 0.1);
+  border-left: 3px solid var(--color-vintage-gold);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-ruby);
+  display: none;
+  box-sizing: border-box;
+}
+
+.letter-bonus-line.is-unlocked {
+  display: block;
+  animation: bonusLineFade 1s ease-in;
+}
+
+@keyframes bonusLineFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bonus-badge {
+  font-family: var(--font-typewriter);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-vintage-gold);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Bottom Letter Close Action */
+.letter-bottom-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.letter-close-bottom-btn {
+  padding: 0.55rem 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-color: var(--color-ruby);
+  color: var(--color-ruby);
+  background: rgba(155, 17, 30, 0.05);
+  box-shadow: 0 2px 8px rgba(155, 17, 30, 0.12);
+}
+
+.letter-close-bottom-btn:hover {
+  background: var(--color-ruby);
+  color: #FFF;
+  border-color: var(--color-ruby);
+  transform: translateY(-1px);
+}
