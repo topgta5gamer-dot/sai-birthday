@@ -21,6 +21,7 @@ class AudioEngine {
     this.tonearmEl = document.getElementById('tonearm-assembly');
     this.playBtn = document.getElementById('vinyl-play-btn');
     this.muteBtn = document.getElementById('vinyl-mute-btn');
+    this.ambientBtn = document.getElementById('vinyl-ambient-btn');
     this.timeCurrentEl = document.getElementById('vinyl-time-current');
     this.timeDurationEl = document.getElementById('vinyl-time-duration');
     this.progressFillEl = document.getElementById('vinyl-progress-fill');
@@ -48,6 +49,12 @@ class AudioEngine {
     if (this.muteBtn) {
       this.muteBtn.addEventListener('click', () => {
         this.toggleMute();
+      });
+    }
+
+    if (this.ambientBtn) {
+      this.ambientBtn.addEventListener('click', () => {
+        this.toggleAmbientRain();
       });
     }
 
@@ -172,6 +179,110 @@ class AudioEngine {
     }
     if (this.audioCtx && this.audioCtx.state === 'suspended') {
       this.audioCtx.resume();
+    }
+  }
+
+  toggleAmbientRain() {
+    this.initAudioContext();
+    if (!this.audioCtx) return;
+
+    if (this.isAmbientPlaying) {
+      this.stopAmbientRain();
+    } else {
+      this.startAmbientRain();
+    }
+  }
+
+  startAmbientRain() {
+    if (this.isAmbientPlaying || !this.audioCtx) return;
+    this.isAmbientPlaying = true;
+    const now = this.audioCtx.currentTime;
+
+    try {
+      const bufferSize = this.audioCtx.sampleRate * 2;
+      const noiseBuffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = this.audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+
+      const rainFilter = this.audioCtx.createBiquadFilter();
+      rainFilter.type = 'lowpass';
+      rainFilter.frequency.setValueAtTime(1100, now);
+
+      const rainGain = this.audioCtx.createGain();
+      rainGain.gain.setValueAtTime(0.001, now);
+      rainGain.gain.linearRampToValueAtTime(0.08, now + 1.2);
+
+      whiteNoise.connect(rainFilter);
+      rainFilter.connect(rainGain);
+      rainGain.connect(this.audioCtx.destination);
+      whiteNoise.start(now);
+
+      const crackleBuffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+      const crackleOut = crackleBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        if (Math.random() < 0.0022) {
+          crackleOut[i] = (Math.random() * 2 - 1) * 0.85;
+        } else {
+          crackleOut[i] = 0;
+        }
+      }
+
+      const crackleSource = this.audioCtx.createBufferSource();
+      crackleSource.buffer = crackleBuffer;
+      crackleSource.loop = true;
+
+      const crackleFilter = this.audioCtx.createBiquadFilter();
+      crackleFilter.type = 'highpass';
+      crackleFilter.frequency.setValueAtTime(1700, now);
+
+      const crackleGain = this.audioCtx.createGain();
+      crackleGain.gain.setValueAtTime(0.001, now);
+      crackleGain.gain.linearRampToValueAtTime(0.11, now + 1.2);
+
+      crackleSource.connect(crackleFilter);
+      crackleFilter.connect(crackleGain);
+      crackleGain.connect(this.audioCtx.destination);
+      crackleSource.start(now);
+
+      this.ambientNodes = { whiteNoise, rainGain, crackleSource, crackleGain };
+
+      if (this.ambientBtn) {
+        this.ambientBtn.classList.add('is-active');
+        this.ambientBtn.innerHTML = '<span>🌧 Rain: On</span>';
+      }
+    } catch (e) {
+      console.warn('[Audio] Ambient synthesis error:', e);
+    }
+  }
+
+  stopAmbientRain() {
+    if (!this.isAmbientPlaying || !this.ambientNodes) return;
+    this.isAmbientPlaying = false;
+    const now = this.audioCtx.currentTime;
+
+    try {
+      this.ambientNodes.rainGain.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+      this.ambientNodes.crackleGain.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+      setTimeout(() => {
+        if (this.ambientNodes) {
+          try { this.ambientNodes.whiteNoise.stop(); } catch(e){}
+          try { this.ambientNodes.crackleSource.stop(); } catch(e){}
+          this.ambientNodes = null;
+        }
+      }, 700);
+    } catch(e) {
+      this.ambientNodes = null;
+    }
+
+    if (this.ambientBtn) {
+      this.ambientBtn.classList.remove('is-active');
+      this.ambientBtn.innerHTML = '<span>🌧 Rain: Off</span>';
     }
   }
 
