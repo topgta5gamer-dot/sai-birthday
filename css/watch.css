@@ -1,0 +1,418 @@
+/**
+ * css/watch.css
+ * Handcrafted Victorian / Edwardian Pocket Watch Chronometer.
+ * Crafted 100% in CSS & SVG (No raster photos).
+ * Optimized dimensions: Zero boundary overflow, perfect circular geometry.
+ */
+
+.watch-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0 2rem;
+  perspective: 1200px;
+  width: 100%;
+}
+
+/* Pendant Chain swaying overhead like a pendulum */
+.watch-chain-anchor {
+  position: relative;
+  width: 120px;
+  height: 75px;
+  transform-origin: top center;
+  animation: pendulumSway 4.5s ease-in-out infinite alternate;
+}
+
+.watch-chain-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 6px rgba(43, 27, 26, 0.15));
+}
+
+@keyframes pendulumSway {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
+}
+
+/* Watch Crown (Winding Knob) */
+.watch-crown-assembly {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -16px;
+  cursor: pointer;
+}
+
+.watch-bow {
+  width: 52px;
+  height: 34px;
+  border: 4px solid var(--color-vintage-gold);
+  border-bottom: none;
+  border-radius: 26px 26px 0 0;
+  background: transparent;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.watch-crown-knob {
+  width: 32px;
+  height: 20px;
+  background: linear-gradient(90deg, #8A6D3B 0%, #E5C378 40%, #FFF2CC 55%, #8A6D3B 100%);
+  border: 1px solid #705426;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  margin-top: -5px;
+  position: relative;
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.watch-crown-knob::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+  border-radius: 3px;
+}
+
+.watch-crown-knob:hover {
+  filter: brightness(1.1);
+}
+
+.watch-crown-knob.is-winding {
+  animation: crownWind 0.3s linear infinite;
+}
+
+@keyframes crownWind {
+  0% { transform: scale(0.96) rotate(0deg); }
+  50% { transform: scale(0.96) rotate(15deg); }
+  100% { transform: scale(0.96) rotate(0deg); }
+}
+
+.crown-hint {
+  position: absolute;
+  top: -28px;
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  background: var(--color-ink);
+  color: var(--color-porcelain);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-vintage-gold);
+}
+
+.watch-crown-assembly:hover .crown-hint,
+.crown-hint.hint-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Main Pocket Watch Body */
+.pocket-watch {
+  position: relative;
+  width: clamp(310px, 86vw, 380px);
+  height: clamp(310px, 86vw, 380px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 34%,
+    #FCEBE6 0%,
+    #E8B8AA 25%,
+    #C48D7D 55%,
+    #8A4B3A 85%,
+    #54251B 100%
+  );
+  box-shadow: 
+    0 20px 45px rgba(43, 27, 26, 0.35),
+    0 4px 12px rgba(43, 27, 26, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.7),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Outer Rose-Gold Bezel Ridge */
+.watch-bezel-rim {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #B8964E 0%, #E6C87C 30%, #947132 70%, #5E4319 100%);
+  padding: 6px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Inner Ruby-Crimson Dial Face */
+.watch-dial-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #B51E2B 0%,
+    #9B111E 45%,
+    #6E0D15 78%,
+    #330408 100%
+  );
+  box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 10px rgba(155, 17, 30, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-porcelain);
+  border: 1px solid rgba(230, 200, 124, 0.35);
+  box-sizing: border-box;
+}
+
+/* Delicate Antique Dial Track (SVG background overlay) */
+.watch-dial-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Dial Content: Fits comfortably inside circle with zero clipping */
+.watch-dial-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 74%;
+  max-width: 230px;
+}
+
+.watch-monogram {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #FFF2CC;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(245, 215, 127, 0.4);
+  border-bottom: 1.5px solid rgba(230, 200, 124, 0.5);
+  padding-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+/* 4 Countdown Dials arranged harmoniously */
+.chronometer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem 0.55rem;
+  width: 100%;
+}
+
+.chrono-subdial {
+  background: linear-gradient(180deg, rgba(42, 6, 12, 0.82) 0%, rgba(18, 2, 5, 0.92) 100%);
+  border: 1px solid rgba(230, 200, 124, 0.45);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.25rem;
+  text-align: center;
+  box-shadow: 
+    inset 0 1px 4px rgba(0, 0, 0, 0.8),
+    0 2px 5px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-sizing: border-box;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.chrono-subdial:hover {
+  border-color: rgba(245, 215, 127, 0.75);
+  transform: translateY(-1px);
+}
+
+.chrono-value {
+  font-family: var(--font-typewriter);
+  font-size: clamp(1.2rem, 3.6vw, 1.55rem);
+  font-weight: 700;
+  color: #FFF2CC;
+  text-shadow: 0 0 10px rgba(245, 215, 127, 0.55), 0 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1;
+}
+
+.chrono-label {
+  font-family: var(--font-typewriter);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-vintage-gold);
+  margin-top: 0.2rem;
+  opacity: 0.95;
+}
+
+.watch-status-line {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #FFF2CC;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.watch-status-line:empty {
+  display: none;
+}
+
+/* Glass Glare Reflection */
+.watch-glass-glare {
+  position: absolute;
+  top: 5%;
+  left: 12%;
+  width: 76%;
+  height: 40%;
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.02) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Hunter-Case Lid (Flippable Cover) */
+.hunter-lid {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #FCEBE6 0%,
+    #E8B8AA 25%,
+    #C48D7D 55%,
+    #8A4B3A 85%,
+    #54251B 100%
+  );
+  border: 4px solid var(--color-vintage-gold);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.5),
+    inset 0 2px 6px rgba(255, 255, 255, 0.6);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, visibility 0.7s;
+  backface-visibility: hidden;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.hunter-lid.is-open {
+  transform: rotateY(-110deg) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.lid-engraving {
+  width: 85%;
+  height: 85%;
+  border: 2px solid rgba(184, 150, 78, 0.75);
+  box-shadow: 
+    inset 0 0 0 4px rgba(255, 242, 204, 0.35),
+    inset 0 0 0 6px rgba(184, 150, 78, 0.5),
+    0 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink);
+  text-align: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.lid-monogram {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-ruby);
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(155, 17, 30, 0.25);
+}
+
+.lid-subtitle {
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 0.4rem;
+  color: var(--color-ink-faint);
+}
+
+.lid-open-prompt {
+  margin-top: 0.85rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--color-ruby);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(155, 17, 30, 0.3);
+}
+
+/* Lid Toggle Button below watch */
+.lid-toggle-btn {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--color-vintage-gold);
+  color: var(--color-ink);
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lid-toggle-btn:hover {
+  background: var(--color-blush);
+  color: var(--color-ruby);
+  border-color: var(--color-ruby);
+}
+
+/* Audio Mute / Unwind Indicator */
+.watch-audio-toggle {
+  margin-top: 0.5rem;
+  background: transparent;
+  border: none;
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.watch-audio-toggle:hover {
+  color: var(--color-ruby);
+}
