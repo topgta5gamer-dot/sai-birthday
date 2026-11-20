@@ -127,23 +127,9 @@ html, body {
   box-sizing: border-box;
 }
 
-/* State Status Banner */
+/* State Status Banner (Removed for clean editorial look) */
 .state-banner {
-  padding: 0.75rem 1.25rem;
-  border-radius: var(--radius-sm);
-  background: rgba(251, 246, 238, 0.9);
-  border: 1px solid var(--color-vintage-gold);
-  border-left: 4px solid var(--color-ruby);
-  max-width: 480px;
-  width: 100%;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(43, 27, 26, 0.07);
+  display: none !important;
 }
 
 .state-badge {
