@@ -209,11 +209,22 @@
   animation: catBounce 0.45s ease-in-out;
 }
 
+.cozy-cat-companion.cat-stretching {
+  animation: catStretch 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 @keyframes catBounce {
   0% { transform: scale(1) translateY(0); }
   35% { transform: scale(1.18, 0.88) translateY(-7px); }
   65% { transform: scale(0.95, 1.05) translateY(-2px); }
   100% { transform: scale(1) translateY(0); }
+}
+
+@keyframes catStretch {
+  0% { transform: scale(1) translateY(0) rotate(0deg); }
+  35% { transform: scale(1.22, 1.15) translateY(-10px) rotate(-6deg); }
+  65% { transform: scale(1.1, 0.95) translateY(-4px) rotate(4deg); }
+  100% { transform: scale(1) translateY(0) rotate(0deg); }
 }
 
 .cat-svg {
