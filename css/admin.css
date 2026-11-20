@@ -1,0 +1,111 @@
+/**
+ * css/admin.css
+ * Floating Time Machine Bar (only loaded when previewKey is validated).
+ */
+
+.admin-bar {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-ink);
+  color: var(--color-porcelain);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 99999;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  border: 1px solid var(--color-vintage-gold);
+  max-width: 95vw;
+}
+
+.admin-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(251, 246, 238, 0.15);
+}
+
+.admin-badge {
+  font-family: var(--font-typewriter);
+  background: var(--color-ruby);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-status {
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  color: var(--color-vintage-gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-btn {
+  background: rgba(251, 246, 238, 0.12);
+  color: var(--color-porcelain);
+  border: 1px solid rgba(251, 246, 238, 0.25);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.admin-btn:hover {
+  background: rgba(251, 246, 238, 0.25);
+  border-color: var(--color-vintage-gold);
+  transform: translateY(-1px);
+}
+
+.admin-btn-highlight {
+  background: var(--color-ruby);
+  border-color: var(--color-ruby);
+  color: #fff;
+  font-weight: 600;
+}
+
+.admin-btn-highlight:hover {
+  background: var(--color-ruby-dark);
+  border-color: var(--color-ruby-dark);
+}
+
+.admin-btn-danger {
+  background: rgba(155, 17, 30, 0.3);
+  border-color: rgba(155, 17, 30, 0.6);
+}
+
+.admin-btn-danger:hover {
+  background: var(--color-ruby);
+}
+
+@media (max-width: 600px) {
+  .admin-bar {
+    border-radius: 12px;
+    bottom: 0.5rem;
+    width: 95vw;
+    padding: 0.6rem;
+  }
+}
