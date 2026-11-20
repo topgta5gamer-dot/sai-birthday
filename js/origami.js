@@ -26,6 +26,15 @@ class OrigamiManager {
 
       this.renderCranes();
       this.updateHud();
+
+      // Dismiss open compliment popups when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.origami-crane-capsule')) {
+          document.querySelectorAll('.origami-crane-capsule.is-active').forEach(el => {
+            el.classList.remove('is-active');
+          });
+        }
+      });
     } catch (err) {
       console.warn('[Origami] Failed to load compliments.json:', err);
     }
@@ -104,20 +113,6 @@ class OrigamiManager {
 
       this.container.appendChild(capsule);
     });
-
-    // Add keyframe style dynamically if not already injected
-    if (!document.getElementById('crane-float-style')) {
-      const style = document.createElement('style');
-      style.id = 'crane-float-style';
-      style.textContent = `
-        @keyframes craneFloat {
-          0% { transform: translate(0, 0) rotate(-4deg); }
-          50% { transform: translate(4px, -8px) rotate(2deg); }
-          100% { transform: translate(-3px, -15px) rotate(-3deg); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
   }
 
   discoverCrane(id, capsuleEl) {
