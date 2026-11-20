@@ -54,6 +54,13 @@ class EnvelopeManager {
     if (this.closeBtn) this.closeBtn.addEventListener('click', handleClose);
     if (this.closeBottomBtn) this.closeBottomBtn.addEventListener('click', handleClose);
 
+    // Bind Print / Save Dispatch Buttons
+    const handlePrint = () => window.print();
+    const printBtn = document.getElementById('letter-print-btn');
+    const printBottomBtn = document.getElementById('letter-print-bottom-btn');
+    if (printBtn) printBtn.addEventListener('click', handlePrint);
+    if (printBottomBtn) printBottomBtn.addEventListener('click', handlePrint);
+
     // Bind Skip Button
     if (this.skipBtn) {
       this.skipBtn.addEventListener('click', () => {
@@ -77,6 +84,7 @@ class EnvelopeManager {
     });
 
     this.checkBonusLine();
+    this.setupWishJar();
   }
 
   bindInitialSealEvent() {
@@ -309,6 +317,93 @@ class EnvelopeManager {
       osc.start(now);
       osc.stop(now + 0.25);
     } catch (e) {}
+  }
+
+  setupWishJar() {
+    this.wishAssembly = document.getElementById('wish-jar-assembly');
+    this.wishInputCard = document.getElementById('wish-input-card');
+    this.wishText = document.getElementById('wish-text-input');
+    this.wishSealBtn = document.getElementById('wish-seal-btn');
+    this.wishCancelBtn = document.getElementById('wish-cancel-btn');
+    this.wishStatusDesc = document.getElementById('wish-jar-status-desc');
+
+    if (!this.wishAssembly) return;
+
+    const savedWish = storage.get('mb_birthday_wish', null);
+    if (savedWish) {
+      if (this.wishStatusDesc) {
+        this.wishStatusDesc.textContent = '✨ Wish sealed into jar. Click to view or whisper anew.';
+      }
+      this.wishAssembly.classList.add('has-wish');
+    }
+
+    this.wishAssembly.addEventListener('click', () => {
+      const isVisible = this.wishInputCard.classList.contains('is-visible');
+      if (!isVisible) {
+        const cur = storage.get('mb_birthday_wish', null);
+        if (cur && this.wishText) {
+          this.wishText.value = cur;
+        }
+        this.wishInputCard.classList.add('is-visible');
+        if (this.wishText) this.wishText.focus();
+      } else {
+        this.wishInputCard.classList.remove('is-visible');
+      }
+    });
+
+    if (this.wishCancelBtn) {
+      this.wishCancelBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (this.wishInputCard) this.wishInputCard.classList.remove('is-visible');
+      });
+    }
+
+    if (this.wishSealBtn) {
+      this.wishSealBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = (this.wishText && this.wishText.value.trim()) || '';
+        if (!val) {
+          alert('Please whisper your birthday wish into the jar first!');
+          return;
+        }
+
+        storage.set('mb_birthday_wish', val);
+        if (this.wishInputCard) this.wishInputCard.classList.remove('is-visible');
+        this.wishAssembly.classList.add('has-wish', 'is-sealing');
+        if (this.wishStatusDesc) {
+          this.wishStatusDesc.textContent = '✨ Wish sealed on December 17th. Guarded by Patrick Jane.';
+        }
+
+        this.playWishChimeSound();
+        setTimeout(() => {
+          this.wishAssembly.classList.remove('is-sealing');
+        }, 1200);
+      });
+    }
+  }
+
+  playWishChimeSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this.audioCtx) this.audioCtx = new AudioCtx();
+      if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+
+      const freqs = [523.25, 659.25, 783.99, 1046.50];
+      freqs.forEach((freq, idx) => {
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+        const t = this.audioCtx.currentTime + idx * 0.12;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.08, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.65);
+      });
+    } catch(e) {}
   }
 }
 
