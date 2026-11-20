@@ -19,7 +19,6 @@ import { revealManager } from './reveal.js';
 import { envelopeManager } from './envelope.js';
 import { memoryPalace } from './palace.js';
 import { mindReader } from './mindreader.js';
-import { matrixEngine } from './matrix.js';
 
 class App {
   constructor() {
@@ -47,9 +46,6 @@ class App {
   }
 
   onUnlockedGate() {
-    // 0. Initialize Matrix Transition, Neo Pill Modal & Dual-Theme Engine
-    matrixEngine.init();
-
     // 1. Initialize the Victorian Pocket Watch Chronometer
     pocketWatch.init();
 
