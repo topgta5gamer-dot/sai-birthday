@@ -1,0 +1,104 @@
+/**
+ * css/paper.css
+ * Analog texture, physical paper warmth, tea-stains, and atmospheric vignette.
+ * Generated with pure SVG feTurbulence and CSS (no tiled raster PNGs).
+ */
+
+/* Background paper grain canvas */
+.paper-grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+}
+
+/* Atmospheric Vignette */
+.vignette-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    circle at 50% 45%,
+    transparent 55%,
+    rgba(43, 27, 26, 0.08) 85%,
+    rgba(43, 27, 26, 0.22) 100%
+  );
+  transition: background 1.5s ease;
+}
+
+/* Atmospheric Dimming during Final Minute (Section 6) */
+[data-state="final-minute"] .vignette-overlay {
+  background: radial-gradient(
+    circle at 50% 45%,
+    transparent 35%,
+    rgba(43, 27, 26, 0.25) 75%,
+    rgba(43, 27, 26, 0.55) 100%
+  );
+}
+
+/* Atmospheric Dimming during Final 10 Seconds */
+[data-state="revealing"] .vignette-overlay {
+  background: radial-gradient(
+    circle at 50% 45%,
+    transparent 20%,
+    rgba(43, 27, 26, 0.4) 65%,
+    rgba(43, 27, 26, 0.75) 100%
+  );
+}
+
+/* Organic Tea Ring Stain in Corner (SVG) */
+.tea-stain {
+  position: fixed;
+  bottom: -40px;
+  right: -30px;
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  transform: rotate(25deg);
+}
+
+.tea-stain-secondary {
+  position: fixed;
+  top: 10%;
+  left: -60px;
+  width: 160px;
+  height: 160px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  transform: rotate(-15deg);
+}
+
+/* Deliberate Imperfection: Handcrafted Paper Edges */
+.paper-card {
+  position: relative;
+  background: var(--color-porcelain);
+  border: 1px solid rgba(184, 150, 78, 0.3);
+  box-shadow: 
+    0 1px 3px rgba(43, 27, 26, 0.05),
+    0 10px 25px rgba(43, 27, 26, 0.07);
+  border-radius: 2px;
+}
+
+/* Faint curled paper corner illusion */
+.paper-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background: linear-gradient(135deg, transparent 50%, rgba(43, 27, 26, 0.06) 50%, rgba(43, 27, 26, 0.12) 100%);
+  pointer-events: none;
+}
