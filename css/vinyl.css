@@ -1,0 +1,304 @@
+/**
+ * css/vinyl.css
+ * Retro Vintage Vinyl Player Widget ("Night Changes - 1D").
+ * Optimized: Perfectly contained turntable geometry, fluid responsive plinth.
+ */
+
+.vinyl-player-section {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  box-sizing: border-box;
+}
+
+/* Turntable Plinth: Luxurious Dark Walnut Woodgrain */
+.turntable-plinth {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, #2E1B15 0%, #1F120E 50%, #150C0A 100%);
+  border: 2px solid var(--color-vintage-gold);
+  border-radius: var(--radius-md);
+  box-shadow: 
+    0 24px 55px rgba(21, 12, 10, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 230, 160, 0.4),
+    inset 0 0 30px rgba(0, 0, 0, 0.6);
+  padding: 1.65rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.turntable-plinth::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(230, 200, 124, 0.35);
+  border-radius: calc(var(--radius-md) - 2px);
+  pointer-events: none;
+}
+
+/* Platter & Vinyl Well */
+.vinyl-deck {
+  position: relative;
+  width: clamp(210px, 58vw, 250px);
+  height: clamp(210px, 58vw, 250px);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Circular Metal Platter Well */
+.platter-well {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #2A2523 0%, #171413 85%, #0B0A09 100%);
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(184, 150, 78, 0.4);
+}
+
+/* The Vinyl Record */
+.vinyl-record {
+  position: relative;
+  width: 94%;
+  height: 94%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #1A1A1A 0%,
+    #0E0E0E 40%,
+    #1D1D1D 55%,
+    #080808 85%,
+    #000000 100%
+  );
+  box-shadow: 
+    0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+
+.vinyl-record.is-spinning {
+  animation: spinRecord 2.8s linear infinite;
+}
+
+@keyframes spinRecord {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Vinyl Micro-Groove Sheen */
+.vinyl-grooves {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0px,
+    transparent 3px,
+    rgba(255, 255, 255, 0.035) 3px,
+    rgba(255, 255, 255, 0.035) 4px
+  );
+  pointer-events: none;
+}
+
+/* Vinyl Center Ruby Label */
+.vinyl-label {
+  position: relative;
+  z-index: 2;
+  width: 36%;
+  height: 36%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 45%, #B51E2B 0%, #9B111E 60%, #6E0D15 100%);
+  border: 2px solid var(--color-vintage-gold);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 2px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.2rem;
+  color: var(--color-porcelain);
+  box-sizing: border-box;
+}
+
+.vinyl-title {
+  font-family: var(--font-serif);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #FFF2CC;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.vinyl-artist {
+  font-family: var(--font-typewriter);
+  font-size: 0.48rem;
+  letter-spacing: 0.05em;
+  color: var(--color-blush);
+  margin-top: 0.1rem;
+  white-space: nowrap;
+}
+
+.vinyl-center-spindle {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #C4C4C4;
+  border: 1px solid #333;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
+  margin-top: 0.15rem;
+}
+
+/* Animated Brass Tonearm */
+.tonearm-assembly {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 45px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.tonearm-base {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #E6C87C 0%, #B8964E 60%, #705426 100%);
+  border: 1px solid #4A3515;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.tonearm-wand {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 75px;
+  height: 115px;
+  transform-origin: 65px 0px;
+  transform: rotate(0deg);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tonearm-assembly.is-playing .tonearm-wand {
+  transform: rotate(22deg);
+}
+
+/* Player Track Info & Progress */
+.vinyl-controls-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  box-sizing: border-box;
+}
+
+.track-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-typewriter);
+  font-size: 0.74rem;
+  color: #FFF2CC;
+}
+
+.track-title-text {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFF2CC;
+  text-shadow: 0 0 10px rgba(245, 215, 127, 0.4);
+}
+
+/* Scrub Progress Bar */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-typewriter);
+  font-size: 0.7rem;
+  color: rgba(255, 242, 204, 0.7);
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(230, 200, 124, 0.35);
+  border-radius: 9999px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #9B111E, #E63946);
+  box-shadow: 0 0 8px rgba(230, 57, 70, 0.6);
+  border-radius: 9999px;
+  transition: width 0.15s linear;
+}
+
+/* Control Buttons */
+.vinyl-buttons-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.vinyl-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(230, 200, 124, 0.55);
+  color: #FFF2CC;
+  font-family: var(--font-typewriter);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.95rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.vinyl-btn:hover {
+  background: var(--color-blush);
+  border-color: var(--color-ruby);
+  color: var(--color-ruby);
+}
+
+.vinyl-play-btn {
+  background: var(--color-ruby);
+  border-color: var(--color-ruby);
+  color: #FFF;
+  font-weight: 600;
+  padding: 0.45rem 1.3rem;
+  box-shadow: 0 4px 12px rgba(155, 17, 30, 0.25);
+}
+
+.vinyl-play-btn:hover {
+  background: var(--color-ruby-dark);
+  border-color: var(--color-ruby-dark);
+  color: #FFF;
+  transform: translateY(-1px);
+}
