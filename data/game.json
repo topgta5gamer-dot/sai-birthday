@@ -1,0 +1,30 @@
+{
+  "sealedPrediction": "I knew you'd choose this card. Because whether you're blasting Billie Eilish, appreciating Mads Mikkelsen's quiet intensity, or rocking Nanami-level swagger with that fiery red hair—you always choose whatever has the most elegance and edge.",
+  "cards": [
+    {
+      "id": "card-jasmine",
+      "symbol": "🌸",
+      "name": "The Jasmine Blossom",
+      "deduction": "Grace, quiet beauty, and pure elegance. A sweet scent blooming under the stars, gentle yet completely unforgettable."
+    },
+    {
+      "id": "card-nanami",
+      "symbol": "🗡️",
+      "name": "Nanami's Ratio",
+      "deduction": "Calm, razor-sharp, and effortlessly stylish. Overtime might be a pain, but having this much natural swagger is second nature."
+    },
+    {
+      "id": "card-apple",
+      "symbol": "🍎",
+      "name": "The Crimson Apple",
+      "deduction": "A taste for the crisp, bold, and classic. You don't settle for ordinary—you want the brightest fruit on the tree."
+    },
+    {
+      "id": "card-cat",
+      "symbol": "🐾",
+      "name": "The Feline Spirit",
+      "deduction": "Independent, razor-sharp instincts, and deeply affectionate to those who earn your trust. A true cat soul."
+    }
+  ],
+  "finaleRiddle": "Patrick Jane leaves one final case clue: 'Look where something sweet stays cold, or where a little red ribbon marks the spot.' Happy Birthday, Sai!"
+}
