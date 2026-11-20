@@ -5,13 +5,35 @@
  */
 
 .cranes-sky {
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   pointer-events: none;
   z-index: 10;
   overflow: hidden;
+}
+
+/* Drifting organic flight / bobbing physics */
+@keyframes craneFloat {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(6px, -14px) rotate(3deg);
+  }
+  50% {
+    transform: translate(-5px, -24px) rotate(-3deg);
+  }
+  75% {
+    transform: translate(4px, -12px) rotate(2deg);
+  }
+  100% {
+    transform: translate(-2px, -4px) rotate(-1deg);
+  }
 }
 
 /* Individual Floating Heart Capsule */
