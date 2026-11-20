@@ -1,0 +1,37 @@
+/**
+ * css/easteregg.css
+ * Playful Easter Eggs: Friendly Red John Smiley & Confetti Engine.
+ * Section 6: Friendly red smiley face with a party hat, triggers confetti.
+ */
+
+.friendly-smiley-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.friendly-smiley-wrapper:hover {
+  transform: scale(1.15) rotate(6deg);
+}
+
+.friendly-smiley-svg {
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+  filter: drop-shadow(0 2px 4px rgba(155, 17, 30, 0.2));
+}
+
+/* Confetti Canvas */
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
