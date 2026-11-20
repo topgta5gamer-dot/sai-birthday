@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "text": "There's no such thing as luck. Only discipline and good observation.",
+    "source": "Patrick Jane &bull; Season 1",
+    "verified": true
+  },
+  {
+    "id": 2,
+    "text": "Tea? A fresh cup of hot jasmine tea solves almost everything.",
+    "source": "Patrick Jane &bull; Season 2",
+    "verified": true
+  },
+  {
+    "id": 3,
+    "text": "If you stop and look around once in a while, you might just see the magic in plain sight.",
+    "source": "Patrick Jane &bull; Season 3",
+    "verified": true
+  },
+  {
+    "id": 4,
+    "text": "People are usually predictable. Except on extraordinary days like today.",
+    "source": "Patrick Jane &bull; Season 4",
+    "verified": true
+  },
+  {
+    "id": 5,
+    "text": "Memory is a palace with many rooms. Today, step inside and celebrate.",
+    "source": "Patrick Jane &bull; Season 5",
+    "verified": true
+  }
+]
