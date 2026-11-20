@@ -1,0 +1,63 @@
+[
+  {
+    "doorId": "room-1",
+    "title": "Room I: The Genesis",
+    "subtitle": "Where the story began",
+    "polaroids": [
+      {
+        "id": "p1",
+        "image": "assets/img/placeholder_1.svg",
+        "tag": "EXHIBIT A",
+        "caption": "The First Chapter &bull; Where It Began",
+        "backNote": "Remember when we first started talking? I already knew you were going to be someone unforgettable.",
+        "rotation": -2.5
+      },
+      {
+        "id": "p2",
+        "image": "assets/img/placeholder_2.svg",
+        "tag": "EXHIBIT B",
+        "caption": "Uncontrollable Laughter &bull; Pure Chaos",
+        "backNote": "That time we couldn't stop laughing—my favorite kind of chaos with you.",
+        "rotation": 3.2
+      }
+    ]
+  },
+  {
+    "doorId": "room-2",
+    "title": "Room II: The Shenanigans",
+    "subtitle": "Unapologetic adventures",
+    "polaroids": [
+      {
+        "id": "p3",
+        "image": "assets/img/placeholder_3.svg",
+        "tag": "EXHIBIT C",
+        "caption": "Late Night Talks &bull; 3 AM Vibes",
+        "backNote": "Those late-night conversations until neither of us can keep our eyes open. I really can't go to sleep without talking to you.",
+        "rotation": -1.8
+      },
+      {
+        "id": "p4",
+        "image": "assets/img/placeholder_4.svg",
+        "tag": "EXHIBIT D",
+        "caption": "The Best Days &bull; Unfiltered Joy",
+        "backNote": "One of my favorite days ever. You were glowing with joy, that radiant smile, and pure swagger.",
+        "rotation": 2.6
+      }
+    ]
+  },
+  {
+    "doorId": "room-3",
+    "title": "Room III: Present Day",
+    "subtitle": "Growing older, never apart",
+    "polaroids": [
+      {
+        "id": "p5",
+        "image": "assets/img/placeholder_5.svg",
+        "tag": "EXHIBIT E",
+        "caption": "Another Year Brighter &bull; 17 December",
+        "backNote": "Here is to celebrating you today and celebrating all your future birthdays together. Happy Birthday, Sai!",
+        "rotation": -3.0
+      }
+    ]
+  }
+]
