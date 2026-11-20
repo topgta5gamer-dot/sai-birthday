@@ -68,14 +68,29 @@ class TeacupController {
   }
 
   petCat() {
+    this.playCatVoice();
+
     if (this.catToast) {
-      this.catToast.textContent = '🐾 Purrrr... (Cat Approved)';
+      const meowMessages = [
+        '🐱 "Meow! 💖" (Sai\'s Favorite)',
+        '🐾 *purrrrrr...* Mew!',
+        '🐱 "Mrrrp? 🐾 *happy purrs*"',
+        '🐾 *soft kitten meow* 💖',
+        '🐱 "Mew! *demands head scratches*"'
+      ];
+      const randomMsg = meowMessages[Math.floor(Math.random() * meowMessages.length)];
+      this.catToast.textContent = randomMsg;
       this.catToast.classList.add('is-purring');
       setTimeout(() => {
         this.catToast.classList.remove('is-purring');
-      }, 2000);
+      }, 2500);
     }
-    this.playPurrSound();
+
+    if (this.catEl) {
+      this.catEl.classList.remove('cat-bounce');
+      void this.catEl.offsetWidth;
+      this.catEl.classList.add('cat-bounce');
+    }
   }
 
   displayNextQuote(showCard = true) {
@@ -126,7 +141,28 @@ class TeacupController {
     } catch (e) {}
   }
 
-  playPurrSound() {
+  playCatVoice() {
+    try {
+      const clips = [
+        'assets/audio/cat-meow.wav',
+        'assets/audio/cat-chirp.wav',
+        'assets/audio/meow.ogg'
+      ];
+      const selectedClip = clips[Math.floor(Math.random() * clips.length)];
+      const audio = new Audio(selectedClip);
+      audio.volume = 0.85;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          this.synthesizeCuteMeow();
+        });
+      }
+    } catch (e) {
+      this.synthesizeCuteMeow();
+    }
+  }
+
+  synthesizeCuteMeow() {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtx) return;
@@ -135,21 +171,40 @@ class TeacupController {
 
       const now = this.audioCtx.currentTime;
       const osc = this.audioCtx.createOscillator();
+      const osc2 = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
+      const filter = this.audioCtx.createBiquadFilter();
 
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(80, now);
-      osc.frequency.setValueAtTime(110, now + 0.15);
-      osc.frequency.setValueAtTime(75, now + 0.3);
+      // Realistic kitten pitch sweep: 460Hz -> 920Hz peak -> 440Hz gentle release
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(460, now);
+      osc.frequency.exponentialRampToValueAtTime(920, now + 0.22);
+      osc.frequency.exponentialRampToValueAtTime(440, now + 0.65);
 
-      gain.gain.setValueAtTime(0.05, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(465, now);
+      osc2.frequency.exponentialRampToValueAtTime(925, now + 0.22);
+      osc2.frequency.exponentialRampToValueAtTime(445, now + 0.65);
 
-      osc.connect(gain);
+      // Kitten vocal tract resonance filter
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1700, now);
+      filter.Q.setValueAtTime(2.0, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.2, now + 0.08);
+      gain.gain.linearRampToValueAtTime(0.15, now + 0.45);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.68);
+
+      osc.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
       gain.connect(this.audioCtx.destination);
 
       osc.start(now);
-      osc.stop(now + 0.4);
+      osc2.start(now);
+      osc.stop(now + 0.70);
+      osc2.stop(now + 0.70);
     } catch (e) {}
   }
 }
