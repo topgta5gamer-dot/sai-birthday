@@ -140,7 +140,78 @@ class OrigamiManager {
     if (count === 17) {
       this.hudEl.classList.add('all-found');
       this.hudEl.innerHTML = `<span>💖</span> <span>All 17 Hearts Discovered! Secret Unlocked</span>`;
+      this.triggerSparklerCelebration();
     }
+  }
+
+  triggerSparklerCelebration() {
+    if (this.sparklersDone) return;
+    this.sparklersDone = true;
+
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.style.position = 'fixed';
+      canvas.style.inset = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '300';
+      document.body.appendChild(canvas);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const sparks = [];
+      const colors = ['#D4AF37', '#F5D77F', '#FFF2CC', '#E63946', '#FF8095'];
+      const originX = Math.min(window.innerWidth - 80, window.innerWidth * 0.85);
+      const originY = 55;
+
+      for (let i = 0; i < 48; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6.5 + 2.5;
+        sparks.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 3.5 + 1.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          life: 1.0,
+          decay: Math.random() * 0.02 + 0.012
+        });
+      }
+
+      const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        sparks.forEach((s) => {
+          if (s.life > 0) {
+            alive = true;
+            s.x += s.vx;
+            s.y += s.vy;
+            s.vy += 0.08;
+            s.life -= s.decay;
+
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, s.life);
+            ctx.fillStyle = s.color;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        if (alive) {
+          requestAnimationFrame(animate);
+        } else {
+          canvas.remove();
+        }
+      };
+      requestAnimationFrame(animate);
+    } catch(e) {}
   }
 
   playRustleSound() {
