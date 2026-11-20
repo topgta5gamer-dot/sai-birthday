@@ -14,17 +14,23 @@ class PocketWatchController {
     this.isMuted = storage.get('mb_mute_pref', false);
     this.audioUnlocked = false;
     this.lastTickSec = null;
-    this.windTimer = null;
     this.chimeInterval = null;
   }
 
   init() {
     this.cacheElements();
     this.setupLidInteractivity();
-    this.setupCrownWinding();
     this.setupMuteToggle();
     this.renderMonograms();
     this.setupParallaxGlare();
+
+    // Auto-unlock audio context on user gesture
+    const unlockAudio = () => {
+      this.audioUnlocked = true;
+      this.initAudioContext();
+    };
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
 
     // Subscribe to clock updates
     clock.subscribe((rem) => {
@@ -46,8 +52,6 @@ class PocketWatchController {
     this.statusLine = document.getElementById('watch-status-line');
     this.lidEl = document.getElementById('hunter-lid');
     this.lidToggleBtn = document.getElementById('lid-toggle-btn');
-    this.crownEl = document.getElementById('watch-crown');
-    this.crownHint = document.getElementById('crown-hint');
     this.muteBtn = document.getElementById('watch-mute-toggle');
     this.monogramLid = document.getElementById('lid-monogram-text');
     this.monogramDial = document.getElementById('dial-monogram-text');
@@ -101,14 +105,24 @@ class PocketWatchController {
       if (this.lidToggleBtn) this.lidToggleBtn.textContent = 'Flip Lid Open';
     }
 
-    const toggleLid = () => {
+    const toggleLid = (e) => {
+      if (e) e.stopPropagation();
+      this.initAudioContext();
+      this.audioUnlocked = true;
+
       const willOpen = !this.lidEl.classList.contains('is-open');
       this.lidEl.classList.toggle('is-open', willOpen);
       storage.set('mb_lid_closed', !willOpen);
+
       if (this.lidToggleBtn) {
         this.lidToggleBtn.textContent = willOpen ? 'Close Lid' : 'Flip Lid Open';
       }
-      this.playTickSound(800, 0.04);
+
+      if (willOpen) {
+        this.playLidOpenSound();
+      } else {
+        this.playLidCloseSound();
+      }
     };
 
     this.lidEl.addEventListener('click', toggleLid);
@@ -117,46 +131,68 @@ class PocketWatchController {
     }
   }
 
-  setupCrownWinding() {
-    if (!this.crownEl) return;
+  playLidOpenSound() {
+    if (this.isMuted || !this.audioCtx) return;
+    try {
+      const now = this.audioCtx.currentTime;
+      // Stage 1: Spring release latch click
+      const osc1 = this.audioCtx.createOscillator();
+      const gain1 = this.audioCtx.createGain();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(1600, now);
+      osc1.frequency.exponentialRampToValueAtTime(350, now + 0.04);
+      gain1.gain.setValueAtTime(0.09, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      osc1.connect(gain1);
+      gain1.connect(this.audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.04);
 
-    const startWinding = (e) => {
-      e.preventDefault();
-      this.initAudioContext();
-      this.crownEl.classList.add('is-winding');
-      if (this.crownHint) {
-        this.crownHint.textContent = 'Winding mechanism...';
-        this.crownHint.classList.add('hint-visible');
-      }
+      // Stage 2: Golden hinge metallic ping
+      const osc2 = this.audioCtx.createOscillator();
+      const gain2 = this.audioCtx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(2400, now + 0.015);
+      osc2.frequency.exponentialRampToValueAtTime(650, now + 0.16);
+      gain2.gain.setValueAtTime(0.045, now + 0.015);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      osc2.connect(gain2);
+      gain2.connect(this.audioCtx.destination);
+      osc2.start(now + 0.015);
+      osc2.stop(now + 0.16);
+    } catch (e) {}
+  }
 
-      let tickCounter = 0;
-      this.windTimer = setInterval(() => {
-        tickCounter++;
-        this.playTickSound(1200 + (tickCounter * 50), 0.03);
-        if (tickCounter >= 6) {
-          clearInterval(this.windTimer);
-          this.windTimer = null;
-          this.audioUnlocked = true;
-          this.crownEl.classList.remove('is-winding');
-          if (this.crownHint) {
-            this.crownHint.textContent = 'Mechanism fully wound!';
-            setTimeout(() => this.crownHint.classList.remove('hint-visible'), 1500);
-          }
-        }
-      }, 100);
-    };
+  playLidCloseSound() {
+    if (this.isMuted || !this.audioCtx) return;
+    try {
+      const now = this.audioCtx.currentTime;
+      // Stage 1: Bezel rim contact
+      const osc1 = this.audioCtx.createOscillator();
+      const gain1 = this.audioCtx.createGain();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(750, now);
+      osc1.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+      gain1.gain.setValueAtTime(0.07, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc1.connect(gain1);
+      gain1.connect(this.audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.035);
 
-    const cancelWinding = () => {
-      if (this.windTimer) {
-        clearInterval(this.windTimer);
-        this.windTimer = null;
-      }
-      if (this.crownEl) this.crownEl.classList.remove('is-winding');
-    };
-
-    this.crownEl.addEventListener('pointerdown', startWinding);
-    window.addEventListener('pointerup', cancelWinding);
-    window.addEventListener('pointercancel', cancelWinding);
+      // Stage 2: Mechanical hunter-case latch lock snap
+      const osc2 = this.audioCtx.createOscillator();
+      const gain2 = this.audioCtx.createGain();
+      osc2.type = 'sawtooth';
+      osc2.frequency.setValueAtTime(1400, now + 0.028);
+      osc2.frequency.exponentialRampToValueAtTime(280, now + 0.085);
+      gain2.gain.setValueAtTime(0.08, now + 0.028);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
+      osc2.connect(gain2);
+      gain2.connect(this.audioCtx.destination);
+      osc2.start(now + 0.028);
+      osc2.stop(now + 0.085);
+    } catch (e) {}
   }
 
   setupMuteToggle() {
