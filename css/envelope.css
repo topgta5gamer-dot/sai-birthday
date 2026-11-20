@@ -386,3 +386,229 @@
   border-color: var(--color-ruby);
   transform: translateY(-1px);
 }
+
+.letter-print-bottom-btn {
+  margin-right: 0.75rem;
+  padding: 0.55rem 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-color: var(--color-vintage-gold);
+  color: var(--color-ink);
+  background: rgba(184, 150, 78, 0.08);
+}
+
+.letter-print-bottom-btn:hover {
+  background: var(--color-blush);
+  border-color: var(--color-ruby);
+  color: var(--color-ruby);
+  transform: translateY(-1px);
+}
+
+/* ================= SAI'S SECRET BIRTHDAY WISH JAR ================= */
+.wish-jar-section {
+  width: 100%;
+  max-width: 520px;
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.wish-jar-assembly {
+  width: 100%;
+  background: var(--color-porcelain);
+  border: 1.5px solid var(--color-vintage-gold);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(43, 27, 26, 0.08);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.wish-jar-assembly:hover {
+  border-color: var(--color-ruby);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(155, 17, 30, 0.15);
+}
+
+.wish-jar-assembly.has-wish {
+  border-color: #D4AF37;
+  background: #FFFDF9;
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+}
+
+.wish-jar-assembly.is-sealing {
+  animation: wishSealPulse 0.9s ease-in-out;
+}
+
+@keyframes wishSealPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(245, 215, 127, 0.65); }
+  100% { transform: scale(1); }
+}
+
+.wish-jar-icon-wrap {
+  width: 54px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.wish-jar-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wish-orb {
+  animation: wishOrbFloat 3s ease-in-out infinite alternate;
+}
+
+.wish-orb-1 { animation-delay: 0s; }
+.wish-orb-2 { animation-delay: 1s; }
+.wish-orb-3 { animation-delay: 2s; }
+
+@keyframes wishOrbFloat {
+  0% { transform: translate(0, 0); opacity: 0.6; }
+  100% { transform: translate(2px, -6px); opacity: 1; }
+}
+
+.wish-jar-meta {
+  text-align: left;
+  flex: 1;
+}
+
+.wish-jar-tag {
+  font-family: var(--font-typewriter);
+  font-size: 0.65rem;
+  color: var(--color-ruby);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+}
+
+.wish-jar-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--color-ink);
+  margin: 0.15rem 0;
+}
+
+.wish-jar-desc {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--color-ink-faint);
+}
+
+.wish-input-card {
+  display: none;
+  width: 100%;
+  background: #FFFDF9;
+  border: 1.5px solid var(--color-vintage-gold);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-top: 1rem;
+  box-shadow: 0 8px 25px rgba(43, 27, 26, 0.12);
+  animation: revealFade 0.4s ease-in;
+  box-sizing: border-box;
+}
+
+.wish-input-card.is-visible {
+  display: block;
+}
+
+.wish-input-label {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  margin-bottom: 0.75rem;
+}
+
+.wish-textarea {
+  width: 100%;
+  background: var(--color-porcelain);
+  border: 1px solid rgba(184, 150, 78, 0.45);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-family: 'Homemade Apple', cursive, var(--font-serif);
+  font-size: 1.05rem;
+  color: #241413;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.wish-textarea:focus {
+  border-color: var(--color-ruby);
+  background: #FFF;
+}
+
+.wish-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.wish-btn {
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wish-seal-btn {
+  background: var(--color-ruby);
+  border: 1px solid var(--color-ruby);
+  color: #FFF;
+}
+
+.wish-seal-btn:hover {
+  background: var(--color-ruby-dark);
+  transform: translateY(-1px);
+}
+
+.wish-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(43, 27, 26, 0.3);
+  color: var(--color-ink);
+}
+
+/* ================= PRINT / KEEPSAKE STYLESHEET ================= */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #parchment-letter-card, #parchment-letter-card * {
+    visibility: visible;
+  }
+  #parchment-letter-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 3rem !important;
+    box-shadow: none !important;
+    border: 2px solid #B8964E !important;
+    background: #FFFDF9 !important;
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .letter-btn, .letter-actions-group, .letter-bottom-actions {
+    display: none !important;
+  }
+}
