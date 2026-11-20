@@ -155,6 +155,7 @@
   perspective: 1000px;
   box-sizing: border-box;
   z-index: 55;
+  contain: layout style;
 }
 
 .mind-card-inner {
@@ -164,6 +165,10 @@
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
   border-radius: var(--radius-sm);
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .mind-card-item:hover:not(.is-flipped) .mind-card-inner {
