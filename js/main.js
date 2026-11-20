@@ -84,19 +84,6 @@ class App {
 
   handleStateChange(newState, prevState, meta) {
     document.documentElement.dataset.state = newState;
-
-    const stateNotice = document.getElementById('state-notice');
-    if (stateNotice) {
-      if (newState === STATES.LOCKED) {
-        stateNotice.textContent = 'Tick tock... Time is moving forward.';
-      } else if (newState === STATES.FINAL_MINUTE) {
-        stateNotice.textContent = "Don't look away.";
-      } else if (newState === STATES.REVEALING) {
-        stateNotice.textContent = '00:00:00. The clock strikes twelve. Revealing surprise...';
-      } else if (newState === STATES.UNLOCKED) {
-        stateNotice.textContent = 'Happy Birthday! The celebration has officially begun.';
-      }
-    }
   }
 
   startClockLoop() {
