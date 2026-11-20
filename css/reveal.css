@@ -1,0 +1,120 @@
+/**
+ * css/reveal.css
+ * Cinematic Midnight Transition & Candlelight Atmosphere.
+ * Section 7.1: Lighting warms from dusk to candlelight, falling rose petals cascade.
+ */
+
+/* Candlelight Warmth Shift */
+body.candlelight-warmth {
+  background-color: #FAF2E8 !important;
+  transition: background-color 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.candlelight-warmth .vignette-overlay {
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(255, 235, 205, 0.15) 0%,
+    transparent 50%,
+    rgba(155, 17, 30, 0.12) 80%,
+    rgba(43, 27, 26, 0.45) 100%
+  ) !important;
+  transition: background 2.5s ease;
+}
+
+/* Falling Rose Petals Canvas */
+.petals-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Celebration Stage Container */
+.celebration-stage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s cubic-bezier(0.2, 0, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* State Visibility Controllers */
+[data-state="unlocked"] .countdown-container,
+[data-state="revealing"] .countdown-container {
+  display: none !important;
+}
+
+[data-state="unlocked"] .celebration-stage,
+[data-state="revealing"] .celebration-stage {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Celebration Banner Header */
+.celebration-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.celebration-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 600;
+  color: var(--color-ruby);
+  line-height: 1.15;
+  text-shadow: 0 2px 4px rgba(155, 17, 30, 0.1);
+}
+
+.celebration-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--color-ink);
+  margin-top: 0.5rem;
+}
+
+/* "Place the needle" Audio Prompt Banner */
+.needle-prompt-banner {
+  display: none;
+  background: var(--color-porcelain);
+  border: 1px solid var(--color-ruby);
+  box-shadow: 0 6px 20px rgba(155, 17, 30, 0.15);
+  border-radius: 9999px;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-typewriter);
+  font-size: 0.85rem;
+  color: var(--color-ruby);
+  animation: promptPulse 2s infinite ease-in-out;
+  transition: all 0.2s ease;
+}
+
+.needle-prompt-banner:hover {
+  background: var(--color-ruby);
+  color: #FFF;
+  transform: translateY(-2px);
+}
+
+@keyframes promptPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(155, 17, 30, 0.35); }
+  50% { box-shadow: 0 0 0 8px rgba(155, 17, 30, 0); }
+}
+
+/* Reduced Motion (Section 5.7, 7.1) */
+@media (prefers-reduced-motion: reduce) {
+  .petals-canvas {
+    display: none !important;
+  }
+  .celebration-stage {
+    transition: opacity 0.5s ease !important;
+    transform: none !important;
+  }
+}
