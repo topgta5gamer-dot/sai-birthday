@@ -1,8 +1,10 @@
 /**
  * js/teacup.js
- * The Steaming Porcelain Teacup & Patrick Jane Quote Engine.
+ * The Steaming Porcelain Teacup & Patrick Jane / Matrix Quote Engine.
  * Features: Tilts on click, non-repeating quotes, and cozy sleeping cat companion.
  */
+
+import { matrixEngine } from './matrix.js';
 
 class TeacupController {
   constructor() {
@@ -68,22 +70,45 @@ class TeacupController {
   }
 
   petCat() {
-    this.playCatVoice();
+    const isBlue = matrixEngine && matrixEngine.isBluePill();
 
-    if (this.catToast) {
-      const meowMessages = [
-        '🐱 "Meow! 💖" (Sai\'s Favorite)',
-        '🐾 *purrrrrr...* Mew!',
-        '🐱 "Mrrrp? 🐾 *happy purrs*"',
-        '🐾 *soft kitten meow* 💖',
-        '🐱 "Mew! *demands head scratches*"'
-      ];
-      const randomMsg = meowMessages[Math.floor(Math.random() * meowMessages.length)];
-      this.catToast.textContent = randomMsg;
-      this.catToast.classList.add('is-purring');
-      setTimeout(() => {
-        this.catToast.classList.remove('is-purring');
-      }, 2500);
+    if (isBlue) {
+      matrixEngine.playDejaVuGlitch();
+      this.playCatVoice();
+
+      if (this.catToast) {
+        const dejaVuMessages = [
+          '🐱 "Glitch in the Matrix! Déjà vu detected!" ⚡',
+          '🐾 *Did a black cat just walk past twice?!* 🟢',
+          '🐱 "System Anomaly: Sai\'s favorite kitten online."',
+          '🐾 *Meow!* "There is no spoon, only treats." 💖',
+          '🐱 "Operator: Matrix meow confirmed!"'
+        ];
+        const randomMsg = dejaVuMessages[Math.floor(Math.random() * dejaVuMessages.length)];
+        this.catToast.textContent = randomMsg;
+        this.catToast.classList.add('is-purring');
+        setTimeout(() => {
+          this.catToast.classList.remove('is-purring');
+        }, 2800);
+      }
+    } else {
+      this.playCatVoice();
+
+      if (this.catToast) {
+        const meowMessages = [
+          '🐱 "Meow! 💖" (Sai\'s Favorite)',
+          '🐾 *purrrrrr...* Mew!',
+          '🐱 "Mrrrp? 🐾 *happy purrs*"',
+          '🐾 *soft kitten meow* 💖',
+          '🐱 "Mew! *demands head scratches*"'
+        ];
+        const randomMsg = meowMessages[Math.floor(Math.random() * meowMessages.length)];
+        this.catToast.textContent = randomMsg;
+        this.catToast.classList.add('is-purring');
+        setTimeout(() => {
+          this.catToast.classList.remove('is-purring');
+        }, 2500);
+      }
     }
 
     if (this.catEl) {
@@ -96,17 +121,24 @@ class TeacupController {
   displayNextQuote(showCard = true) {
     if (!this.quotes || this.quotes.length === 0) return;
 
+    const isBlue = matrixEngine && matrixEngine.isBluePill();
+    const currentTheme = isBlue ? 'blue-pill' : 'red-pill';
+
+    // Filter quotes relevant to current theme if available
+    let pool = this.quotes.filter(q => !q.theme || q.theme === currentTheme);
+    if (pool.length === 0) pool = this.quotes;
+
     let nextIndex;
-    if (this.quotes.length === 1) {
+    if (pool.length === 1) {
       nextIndex = 0;
     } else {
       do {
-        nextIndex = Math.floor(Math.random() * this.quotes.length);
-      } while (nextIndex === this.lastQuoteIndex);
+        nextIndex = Math.floor(Math.random() * pool.length);
+      } while (nextIndex === this.lastQuoteIndex && pool.length > 1);
     }
 
     this.lastQuoteIndex = nextIndex;
-    const item = this.quotes[nextIndex];
+    const item = pool[nextIndex];
 
     if (this.textEl) this.textEl.textContent = `"${item.text}"`;
     if (this.sourceEl) this.sourceEl.textContent = `— ${item.source || 'Patrick Jane'}`;
@@ -142,24 +174,19 @@ class TeacupController {
   }
 
   playCatVoice() {
-    try {
-      const clips = [
-        'assets/audio/cat-meow.wav',
-        'assets/audio/cat-chirp.wav',
-        'assets/audio/meow.ogg'
-      ];
-      const selectedClip = clips[Math.floor(Math.random() * clips.length)];
-      const audio = new Audio(selectedClip);
-      audio.volume = 0.85;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          this.synthesizeCuteMeow();
-        });
-      }
-    } catch (e) {
+    const audioFiles = [
+      'assets/audio/cat-meow.wav',
+      'assets/audio/cat-chirp.wav',
+      'assets/audio/meow.ogg'
+    ];
+    const chosenFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+
+    const audio = new Audio(chosenFile);
+    audio.volume = 0.85;
+
+    audio.play().catch(() => {
       this.synthesizeCuteMeow();
-    }
+    });
   }
 
   synthesizeCuteMeow() {
@@ -171,40 +198,23 @@ class TeacupController {
 
       const now = this.audioCtx.currentTime;
       const osc = this.audioCtx.createOscillator();
-      const osc2 = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
-      const filter = this.audioCtx.createBiquadFilter();
 
-      // Realistic kitten pitch sweep: 460Hz -> 920Hz peak -> 440Hz gentle release
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(460, now);
-      osc.frequency.exponentialRampToValueAtTime(920, now + 0.22);
-      osc.frequency.exponentialRampToValueAtTime(440, now + 0.65);
-
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(465, now);
-      osc2.frequency.exponentialRampToValueAtTime(925, now + 0.22);
-      osc2.frequency.exponentialRampToValueAtTime(445, now + 0.65);
-
-      // Kitten vocal tract resonance filter
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(1700, now);
-      filter.Q.setValueAtTime(2.0, now);
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(780, now + 0.18);
+      osc.frequency.exponentialRampToValueAtTime(520, now + 0.45);
 
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.2, now + 0.08);
-      gain.gain.linearRampToValueAtTime(0.15, now + 0.45);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.68);
+      gain.gain.exponentialRampToValueAtTime(0.2, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.25);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
 
-      osc.connect(filter);
-      osc2.connect(filter);
-      filter.connect(gain);
+      osc.connect(gain);
       gain.connect(this.audioCtx.destination);
 
       osc.start(now);
-      osc2.start(now);
-      osc.stop(now + 0.70);
-      osc2.stop(now + 0.70);
+      osc.stop(now + 0.5);
     } catch (e) {}
   }
 }

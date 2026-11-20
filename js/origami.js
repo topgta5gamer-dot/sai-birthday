@@ -135,11 +135,24 @@ class OrigamiManager {
   updateHud() {
     if (!this.hudEl) return;
     const count = this.foundIds.size;
-    this.hudEl.innerHTML = `<span>💖</span> <span>${count} / 17 Hearts Discovered</span>`;
+    const isBlue = document.documentElement.dataset.theme === 'blue-pill';
 
-    if (count === 17) {
-      this.hudEl.classList.add('all-found');
-      this.hudEl.innerHTML = `<span>💖</span> <span>All 17 Hearts Discovered! Secret Unlocked</span>`;
+    if (isBlue) {
+      if (count === 17) {
+        this.hudEl.classList.add('all-found');
+        this.hudEl.innerHTML = `<span>🟢</span> <span>All 17 Matrix Cores Hacked! Zion Signal Clear</span>`;
+      } else {
+        this.hudEl.classList.remove('all-found');
+        this.hudEl.innerHTML = `<span>🟢</span> <span>${count} / 17 Matrix Cores Hacked</span>`;
+      }
+    } else {
+      if (count === 17) {
+        this.hudEl.classList.add('all-found');
+        this.hudEl.innerHTML = `<span>💖</span> <span>All 17 Hearts Discovered! Secret Unlocked</span>`;
+      } else {
+        this.hudEl.classList.remove('all-found');
+        this.hudEl.innerHTML = `<span>💖</span> <span>${count} / 17 Hearts Discovered</span>`;
+      }
     }
   }
 

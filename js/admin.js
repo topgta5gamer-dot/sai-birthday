@@ -4,11 +4,12 @@
  * Section 8:
  *  - Only active when ?preview=[previewKey] is in URL.
  *  - If key is wrong or missing, this module injects NOTHING into the DOM.
- *  - Provides live Time-Machine controls: Pre-Midnight, T-10s, Post-Midnight, Reset, Clear Storage.
+ *  - Provides live Time-Machine controls: Pre-Midnight, T-10s, Post-Midnight, Reset, Matrix Test, Clear Storage.
  */
 import { CONFIG } from './config.js';
 import { clock } from './clock.js';
 import { stateMachine, STATES, storage } from './state.js';
+import { matrixEngine } from './matrix.js';
 
 export function initAdmin() {
   const params = new URLSearchParams(window.location.search);
@@ -43,6 +44,12 @@ function renderAdminBar() {
       <button type="button" class="admin-btn admin-btn-highlight" id="btn-t-minus-10" title="Simulate 10 seconds before midnight">
         ⚡ T-minus 10s
       </button>
+      <button type="button" class="admin-btn" id="btn-matrix-test" title="Trigger Matrix Digital Rain Transition">
+        🟢 Matrix Transition
+      </button>
+      <button type="button" class="admin-btn" id="btn-neo-pills" title="Show Keanu Reeves Pill Choice Modal">
+        💊 Neo Pills
+      </button>
       <button type="button" class="admin-btn" id="btn-post-midnight" title="Force post-midnight unlocked celebration">
         🎉 Post-Midnight
       </button>
@@ -62,12 +69,10 @@ function renderAdminBar() {
 
   // 1. Pre-Midnight: set clock offset so countdown is safely in the future (> 1 hour)
   document.getElementById('btn-pre-midnight').addEventListener('click', () => {
-    // If real time is already before unlock, offset is 0, otherwise shift target forward
     const realRemaining = targetTime - Date.now();
     if (realRemaining > 60000) {
       clock.resetOffset();
     } else {
-      // Simulate being 3 hours before target
       clock.setOffset(targetTime - (3 * 3600 * 1000) - Date.now());
     }
     stateMachine.transitionTo(STATES.LOCKED);
@@ -80,14 +85,26 @@ function renderAdminBar() {
     stateMachine.transitionTo(STATES.FINAL_MINUTE);
   });
 
-  // 3. Post-Midnight: unlocked celebration
+  // 3. Matrix Digital Rain Transition
+  document.getElementById('btn-matrix-test').addEventListener('click', () => {
+    matrixEngine.triggerCinematicTransition(() => {
+      stateMachine.transitionTo(STATES.UNLOCKED);
+    });
+  });
+
+  // 4. Neo's Pill Choice
+  document.getElementById('btn-neo-pills').addEventListener('click', () => {
+    matrixEngine.openNeoChoiceModal();
+  });
+
+  // 5. Post-Midnight: unlocked celebration
   document.getElementById('btn-post-midnight').addEventListener('click', () => {
     const requiredOffset = (targetTime + 2000) - Date.now();
     clock.setOffset(requiredOffset);
     stateMachine.transitionTo(STATES.UNLOCKED);
   });
 
-  // 4. Real Clock
+  // 6. Real Clock
   document.getElementById('btn-reset-clock').addEventListener('click', () => {
     clock.resetOffset();
     const rem = clock.getRemaining();
@@ -100,23 +117,24 @@ function renderAdminBar() {
     }
   });
 
-  // 5. Clear Storage
+  // 7. Clear Storage
   document.getElementById('btn-clear-storage').addEventListener('click', () => {
-    storage.clearAll();
+    storage.clear();
+    storage.set('sai_pill_choice', null);
     window.location.reload();
   });
 
-  // Live Status updater
-  const statusEl = document.getElementById('admin-status-text');
-  const updateStatus = () => {
-    const rem = clock.getRemaining();
-    const st = stateMachine.getState();
-    const offsetSec = Math.round(clock.getOffset() / 1000);
-    const offsetStr = offsetSec !== 0 ? ` (Offset: ${offsetSec}s)` : ' (Real Time)';
-    statusEl.textContent = `State: [${st}] | Rem: ${rem.days}d ${rem.hours}h ${rem.minutes}m ${rem.seconds}s${offsetStr}`;
-  };
+  // Update Status Display
+  stateMachine.subscribe((state) => {
+    const statusEl = document.getElementById('admin-status-text');
+    if (statusEl) {
+      statusEl.textContent = `State: ${state}`;
+    }
+  });
 
-  clock.subscribe(updateStatus);
-  stateMachine.subscribe(updateStatus);
-  updateStatus();
+  // Initial status reflection
+  const statusEl = document.getElementById('admin-status-text');
+  if (statusEl) {
+    statusEl.textContent = `State: ${stateMachine.getState()}`;
+  }
 }

@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="css/easteregg.css">
   <link rel="stylesheet" href="css/gate.css">
   <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/matrix.css">
 </head>
 <body>
   <!-- Analog Paper Grain Filter (feTurbulence - Section 2) -->
@@ -63,6 +64,60 @@
 
   <!-- Rose Petals Canvas for Midnight Reveal -->
   <canvas class="petals-canvas" id="petals-canvas" aria-hidden="true"></canvas>
+
+  <!-- Fullscreen Matrix Digital Rain Canvas -->
+  <canvas class="matrix-rain-canvas" id="matrix-rain-canvas" aria-hidden="true"></canvas>
+
+  <!-- Matrix Transition Cinematic Terminal Overlay -->
+  <div class="matrix-transition-overlay" id="matrix-transition-overlay" aria-hidden="true">
+    <div class="matrix-terminal-window">
+      <div class="matrix-terminal-header">
+        <div class="terminal-dots"><span></span><span></span><span></span></div>
+        <div>CARRIER SIGNAL 12.17 MHZ // CONNECTED</div>
+      </div>
+      <div class="matrix-terminal-body" id="matrix-terminal-body"></div>
+      <div><span class="terminal-cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- Keanu Reeves (Neo) Red Pill vs Blue Pill Choice Modal -->
+  <div class="matrix-choice-modal" id="matrix-choice-modal" role="dialog" aria-modal="true" aria-label="Neo's Pill Choice">
+    <div class="matrix-modal-dialog">
+      <!-- Neo (Keanu Reeves) Artwork -->
+      <div class="neo-artwork-wrap">
+        <img src="assets/img/neo_matrix.svg" alt="Neo (Keanu Reeves) offering the Red Pill and Blue Pill" width="520" height="380" />
+      </div>
+
+      <div class="neo-quote-box">
+        <div class="neo-quote-title">Keanu Reeves // Neo</div>
+        <p class="neo-monologue">
+          "This is your last chance, Sai. After this, there is no turning back.<br><br>
+          You take the <strong class="blue-highlight">Blue Pill</strong>—the story continues in the <strong>Matrix Construct</strong>. You enter the cyber reality: neon green code streams, terminal mysteries, and infinite digital possibilities.<br><br>
+          You take the <strong class="red-highlight">Red Pill</strong>—you stay in Wonderland. You enter <strong>Patrick Jane's Memory Palace</strong>, CBI case files, warm candlelight, and I show you how deep the rabbit hole goes."
+        </p>
+      </div>
+
+      <div class="pills-action-row">
+        <!-- Red Pill Button -->
+        <button type="button" class="pill-choice-card pill-card-red" id="btn-take-red-pill" aria-label="Take the Red Pill: CBI Reality &amp; Patrick Jane's Memory Palace">
+          <div class="pill-capsule-3d capsule-red">
+            <div class="capsule-glint"></div>
+          </div>
+          <div class="pill-card-title">🔴 Take the Red Pill</div>
+          <div class="pill-card-sub">CBI Memory Palace &amp; Victorian Reality</div>
+        </button>
+
+        <!-- Blue Pill Button -->
+        <button type="button" class="pill-choice-card pill-card-blue" id="btn-take-blue-pill" aria-label="Take the Blue Pill: The Matrix Construct &amp; Cyberpunk Reality">
+          <div class="pill-capsule-3d capsule-blue">
+            <div class="capsule-glint"></div>
+          </div>
+          <div class="pill-card-title">🔵 Take the Blue Pill</div>
+          <div class="pill-card-sub">The Matrix Construct &amp; Cyberpunk Reality</div>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Background Music Audio Element -->
   <audio id="bg-music"></audio>
@@ -98,6 +153,16 @@
   <div id="app">
     <!-- Header -->
     <header class="site-header">
+      <!-- Matrix Pill Mode Switcher (Visible once a pill is chosen) -->
+      <div class="pill-switcher-container" id="pill-switcher-container" style="display: none;">
+        <button type="button" class="pill-switch-btn is-red" id="pill-switch-btn" title="Toggle between Reality and Matrix modes">
+          <span class="pill-dot"></span>
+          <span>CBI Reality (Red Pill)</span>
+          <span style="opacity: 0.7; font-size: 0.75rem;">⇄ Switch to 🔵 Matrix</span>
+        </button>
+        <button type="button" class="pill-replay-btn" id="pill-replay-choice-btn" title="Watch Keanu Reeves ask again">🎬 Neo's Choice</button>
+      </div>
+
       <div class="case-badge">CBI : Curly Baal waala Insaan</div>
       <h1 class="title-display">A Question of Time</h1>
       <p class="subtitle">"There is no such thing as luck. Only discipline."</p>

@@ -3,30 +3,70 @@
     "id": 1,
     "text": "There's no such thing as luck. Only discipline and good observation.",
     "source": "Patrick Jane • Season 1",
+    "theme": "red-pill",
     "verified": true
   },
   {
     "id": 2,
     "text": "Tea? A fresh cup of hot jasmine tea solves almost everything.",
     "source": "Patrick Jane • Season 2",
+    "theme": "red-pill",
     "verified": true
   },
   {
     "id": 3,
     "text": "If you stop and look around once in a while, you might just see the magic in plain sight.",
     "source": "Patrick Jane • Season 3",
+    "theme": "red-pill",
     "verified": true
   },
   {
     "id": 4,
     "text": "People are usually predictable. Except on extraordinary days like today.",
     "source": "Patrick Jane • Season 4",
+    "theme": "red-pill",
     "verified": true
   },
   {
     "id": 5,
     "text": "Memory is a palace with many rooms. Today, step inside and celebrate.",
     "source": "Patrick Jane • Season 5",
+    "theme": "red-pill",
+    "verified": true
+  },
+  {
+    "id": 6,
+    "text": "I can only show you the door, Sai. You're the one that has to walk through it.",
+    "source": "Morpheus • The Matrix",
+    "theme": "blue-pill",
+    "verified": true
+  },
+  {
+    "id": 7,
+    "text": "Do not try and bend the spoon. That's impossible. Instead, only try to realize the truth: there is no spoon.",
+    "source": "Spoon Boy • The Matrix",
+    "theme": "blue-pill",
+    "verified": true
+  },
+  {
+    "id": 8,
+    "text": "Being the One is just like being in love. No one can tell you you're in love, you just know it.",
+    "source": "The Oracle • The Matrix",
+    "theme": "blue-pill",
+    "verified": true
+  },
+  {
+    "id": 9,
+    "text": "Choice is an illusion created between those with power and those without.",
+    "source": "The Merovingian • The Matrix",
+    "theme": "blue-pill",
+    "verified": true
+  },
+  {
+    "id": 10,
+    "text": "I know kung fu... and I also know you deserve the happiest birthday ever.",
+    "source": "Neo • The Matrix",
+    "theme": "blue-pill",
     "verified": true
   }
 ]
